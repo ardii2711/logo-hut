@@ -1,8 +1,8 @@
 import { Router } from 'express';
+import * as authController from '../controllers/auth.controller';
 
 const router = Router();
 
-// POST /api/auth/login - akan diimplementasi di BE-4
-// router.post('/login', authController.login);
+router.post('/login', authController.loginHandler);
 
 export default router;
