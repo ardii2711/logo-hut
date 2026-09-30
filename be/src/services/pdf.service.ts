@@ -1,177 +1,256 @@
-import PDFDocument from 'pdfkit';
-import { Submission } from '@prisma/client';
+import PDFDocument from "pdfkit";
+import { Submission } from "@prisma/client";
 
 export const generateReceiptPDF = (submission: Submission): PDFKit.PDFDocument => {
   const doc = new PDFDocument({
-    size: 'A4',
-    margins: { top: 50, bottom: 50, left: 50, right: 50 },
+    size: "A4",
+    margins: {
+      top: 40,
+      bottom: 40,
+      left: 45,
+      right: 45,
+    },
   });
 
-  // Header
-  doc
-    .fontSize(20)
-    .font('Helvetica-Bold')
-    .text('BUKTI PENGIRIMAN RESMI', { align: 'center' })
-    .moveDown(0.5);
+  const PAGE_WIDTH = 595.28;
+  const LEFT = 45;
+  const RIGHT = PAGE_WIDTH - 45;
+  const CONTENT_WIDTH = RIGHT - LEFT;
 
-  doc
-    .fontSize(14)
-    .font('Helvetica')
-    .text('Sayembara Desain Logo HUT ke-14', { align: 'center' })
-    .text('Kabupaten Mamuju Tengah', { align: 'center' })
-    .moveDown(2);
+  const COLORS = {
+    primary: "#00796B",
+    primaryDark: "#00574B",
+    primaryLight: "#E8F5F2",
+    text: "#1F2937",
+    muted: "#6B7280",
+    lightText: "#9CA3AF",
+    border: "#E5E7EB",
+    background: "#F8FAFC",
+    white: "#FFFFFF",
+    success: "#087F5B",
+    successBg: "#E8F8F1",
+  };
 
-  // Divider
-  doc
-    .strokeColor('#00796B')
-    .lineWidth(2)
-    .moveTo(50, doc.y)
-    .lineTo(545, doc.y)
-    .stroke()
-    .moveDown(1.5);
+  const drawRoundedBox = (x: number, y: number, width: number, height: number, fill: string, radius = 8) => {
+    doc.roundedRect(x, y, width, height, radius).fillColor(fill).fill();
+  };
 
-  // Content - Kode Registrasi (highlight)
-  doc
-    .fontSize(12)
-    .font('Helvetica-Bold')
-    .fillColor('#333333')
-    .text('KODE REGISTRASI UNIK', { continued: false })
-    .moveDown(0.3);
+  const drawSectionTitle = (title: string, yPos: number) => {
+    doc.font("Helvetica-Bold").fontSize(10).fillColor(COLORS.primaryDark).text(title.toUpperCase(), LEFT, yPos);
 
-  doc
-    .fontSize(18)
-    .font('Helvetica-Bold')
-    .fillColor('#00796B')
-    .text(submission.submissionCode, { align: 'left' })
-    .moveDown(1.5);
-
-  // Data Peserta
-  doc
-    .fontSize(12)
-    .font('Helvetica-Bold')
-    .fillColor('#333333')
-    .text('DATA PESERTA', { underline: true })
-    .moveDown(0.5);
-
-  const fields = [
-    { label: 'Nama Lengkap', value: submission.name },
-    { label: 'Email', value: submission.email },
-    { label: 'Nomor WhatsApp', value: submission.whatsapp },
-  ];
-
-  fields.forEach((field) => {
     doc
-      .fontSize(10)
-      .font('Helvetica-Bold')
-      .fillColor('#666666')
-      .text(field.label + ':', { continued: true, width: 150 })
-      .font('Helvetica')
-      .fillColor('#000000')
-      .text(' ' + field.value, { width: 350 });
-    doc.moveDown(0.3);
-  });
+      .strokeColor(COLORS.primary)
+      .lineWidth(2)
+      .moveTo(LEFT, yPos + 15)
+      .lineTo(LEFT + 28, yPos + 15)
+      .stroke();
+  };
 
-  doc.moveDown(1);
-
-  // Data Karya
-  doc
-    .fontSize(12)
-    .font('Helvetica-Bold')
-    .fillColor('#333333')
-    .text('DATA KARYA', { underline: true })
-    .moveDown(0.5);
-
-  doc
-    .fontSize(10)
-    .font('Helvetica-Bold')
-    .fillColor('#666666')
-    .text('Judul Karya:', { continued: true, width: 150 })
-    .font('Helvetica')
-    .fillColor('#000000')
-    .text(' ' + submission.title, { width: 350 });
-  doc.moveDown(0.3);
-
-  doc
-    .fontSize(10)
-    .font('Helvetica-Bold')
-    .fillColor('#666666')
-    .text('Filosofi/Narasi:', { continued: false })
-    .moveDown(0.2);
-
-  doc
-    .fontSize(9)
-    .font('Helvetica')
-    .fillColor('#000000')
-    .text(submission.description, {
-      width: 495,
-      align: 'justify',
+  const drawField = (label: string, value: string, x: number, yPos: number, width: number) => {
+    doc.font("Helvetica-Bold").fontSize(7.5).fillColor(COLORS.muted).text(label.toUpperCase(), x, yPos, {
+      width,
     });
 
-  doc.moveDown(1);
+    doc
+      .font("Helvetica")
+      .fontSize(9.5)
+      .fillColor(COLORS.text)
+      .text(value || "-", x, yPos + 11, {
+        width,
+        lineGap: 2,
+      });
+  };
 
-  // Tanggal Submit
-  const submittedDate = new Date(submission.createdAt).toLocaleDateString('id-ID', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'Asia/Makassar', // WITA
+  // ============================================================
+  // BACKGROUND & ACCENT
+  // ============================================================
+
+  // Full page background
+  doc.rect(0, 0, PAGE_WIDTH, 841.89).fillColor(COLORS.background).fill();
+
+  // Top header accent bar
+  doc.rect(0, 0, PAGE_WIDTH, 6).fillColor(COLORS.primary).fill();
+
+  // ============================================================
+  // HEADER
+  // ============================================================
+
+  let y = 38;
+
+  // Header Title Area
+  doc.font("Helvetica-Bold").fontSize(8).fillColor(COLORS.primary).text("DOKUMEN DIGITAL RESMI", LEFT, y);
+
+  y += 15;
+  doc.font("Helvetica-Bold").fontSize(20).fillColor(COLORS.text).text("Bukti Pengiriman Karya", LEFT, y);
+
+  y += 24;
+  doc.font("Helvetica").fontSize(9.5).fillColor(COLORS.muted).text("Sayembara Desain Logo HUT ke-14 Kabupaten Mamuju Tengah", LEFT, y);
+
+  // Status Badge (Top Right)
+  const badgeWidth = 110;
+  const badgeHeight = 38;
+  drawRoundedBox(RIGHT - badgeWidth, 38, badgeWidth, badgeHeight, COLORS.successBg, 8);
+
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(7.5)
+    .fillColor(COLORS.muted)
+    .text("STATUS", RIGHT - badgeWidth, 44, {
+      width: badgeWidth,
+      align: "center",
+    });
+
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(10)
+    .fillColor(COLORS.success)
+    .text("TERDAFTAR", RIGHT - badgeWidth, 57, {
+      width: badgeWidth,
+      align: "center",
+    });
+
+  y += 30;
+
+  // Divider Line
+  doc.strokeColor(COLORS.border).lineWidth(1).moveTo(LEFT, y).lineTo(RIGHT, y).stroke();
+
+  y += 18;
+
+  // ============================================================
+  // KODE REGISTRASI CARD
+  // ============================================================
+
+  const codeCardHeight = 76;
+  drawRoundedBox(LEFT, y, CONTENT_WIDTH, codeCardHeight, COLORS.white, 10);
+
+  // Left Accent Bar inside card
+  doc.roundedRect(LEFT, y, 4, codeCardHeight, 2).fillColor(COLORS.primary).fill();
+
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(7.5)
+    .fillColor(COLORS.muted)
+    .text("KODE REGISTRASI UNIK", LEFT + 18, y + 14);
+
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(20)
+    .fillColor(COLORS.primary)
+    .text(submission.submissionCode, LEFT + 18, y + 28);
+
+  doc
+    .font("Helvetica")
+    .fontSize(8)
+    .fillColor(COLORS.lightText)
+    .text("Simpan kode ini sebagai referensi bukti sah pengiriman karya Anda.", LEFT + 18, y + 54);
+
+  y += codeCardHeight + 20;
+
+  // ============================================================
+  // DATA PESERTA
+  // ============================================================
+
+  drawSectionTitle("Data Peserta", y);
+  y += 24;
+
+  const participantCardHeight = 105;
+  drawRoundedBox(LEFT, y, CONTENT_WIDTH, participantCardHeight, COLORS.white, 10);
+
+  const colGap = 20;
+  const colWidth = (CONTENT_WIDTH - 40 - colGap) / 2;
+  const leftColX = LEFT + 20;
+  const rightColX = LEFT + 20 + colWidth + colGap;
+
+  // Row 1
+  drawField("Nama Lengkap", submission.name, leftColX, y + 15, colWidth);
+  drawField("Email", submission.email, rightColX, y + 15, colWidth);
+
+  // Row 2
+  drawField("Nomor WhatsApp", submission.whatsapp, leftColX, y + 58, colWidth);
+
+  y += participantCardHeight + 20;
+
+  // ============================================================
+  // DATA KARYA
+  // ============================================================
+
+  drawSectionTitle("Data Karya", y);
+  y += 24;
+
+  // Combined Work Card (Title & Description in 1 Container)
+  const workCardHeight = 180;
+  drawRoundedBox(LEFT, y, CONTENT_WIDTH, workCardHeight, COLORS.white, 10);
+
+  // Title section inside container
+  drawField("Judul Karya", submission.title, LEFT + 20, y + 15, CONTENT_WIDTH - 40);
+
+  // Inner Divider
+  doc
+    .strokeColor(COLORS.border)
+    .lineWidth(0.5)
+    .moveTo(LEFT + 20, y + 55)
+    .lineTo(RIGHT - 20, y + 55)
+    .stroke();
+
+  // Philosophy / Description
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(7.5)
+    .fillColor(COLORS.muted)
+    .text("FILOSOFI / NARASI KARYA", LEFT + 20, y + 68);
+
+  doc
+    .font("Helvetica")
+    .fontSize(9)
+    .fillColor(COLORS.text)
+    .text(submission.description || "-", LEFT + 20, y + 82, {
+      width: CONTENT_WIDTH - 40,
+      height: 85,
+      align: "justify",
+      lineGap: 3,
+    });
+
+  y += workCardHeight + 20;
+
+  // ============================================================
+  // INFORMASI PENGIRIMAN
+  // ============================================================
+
+  drawSectionTitle("Informasi Pengiriman", y);
+  y += 24;
+
+  const infoCardHeight = 60;
+  drawRoundedBox(LEFT, y, CONTENT_WIDTH, infoCardHeight, COLORS.white, 10);
+
+  const submittedDate = new Date(submission.createdAt).toLocaleDateString("id-ID", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Makassar",
   });
 
-  doc
-    .fontSize(10)
-    .font('Helvetica-Bold')
-    .fillColor('#666666')
-    .text('Tanggal Pengiriman:', { continued: true, width: 150 })
-    .font('Helvetica')
-    .fillColor('#000000')
-    .text(' ' + submittedDate + ' WITA', { width: 350 });
+  drawField("Tanggal & Waktu Pengiriman", `${submittedDate} WITA`, leftColX, y + 15, colWidth);
+  drawField("Status Pengiriman", "Terverifikasi / Terdaftar", rightColX, y + 15, colWidth);
 
-  doc.moveDown(0.5);
+  // ============================================================
+  // FOOTER
+  // ============================================================
 
-  doc
-    .fontSize(10)
-    .font('Helvetica-Bold')
-    .fillColor('#666666')
-    .text('Status:', { continued: true, width: 150 })
-    .font('Helvetica-Bold')
-    .fillColor('#00796B')
-    .text(' TERDAFTAR ✓', { width: 350 });
+  const footerY = 780;
 
-  doc.moveDown(2);
-
-  // Divider
-  doc
-    .strokeColor('#CCCCCC')
-    .lineWidth(1)
-    .moveTo(50, doc.y)
-    .lineTo(545, doc.y)
-    .stroke()
-    .moveDown(1);
-
-  // Footer
-  doc
-    .fontSize(9)
-    .font('Helvetica')
-    .fillColor('#666666')
-    .text('Panitia Sayembara Logo HUT ke-14 Kabupaten Mamuju Tengah', { align: 'center' })
-    .text('Dinas Kepemudaan, Olahraga, Pariwisata dan Ekonomi Kreatif', { align: 'center' })
-    .text('Dinas Komunikasi, Informatika, Statistik dan Persandian', { align: 'center' })
-    .moveDown(0.5);
+  doc.strokeColor(COLORS.border).lineWidth(1).moveTo(LEFT, footerY).lineTo(RIGHT, footerY).stroke();
 
   doc
+    .font("Helvetica-Bold")
     .fontSize(8)
-    .font('Helvetica-Oblique')
-    .fillColor('#999999')
-    .text('Dokumen ini sah tanpa tanda tangan (generated by system)', { align: 'center' })
-    .moveDown(0.3);
-
-  doc
-    .fontSize(7)
-    .fillColor('#CCCCCC')
-    .text('Dicetak: ' + new Date().toLocaleString('id-ID', { timeZone: 'Asia/Makassar' }) + ' WITA', { align: 'center' });
+    .fillColor(COLORS.muted)
+    .text("PANITIA SAYEMBARA DESAIN LOGO HUT KE-14 KABUPATEN MAMUJU TENGAH", LEFT, footerY + 12, {
+      width: CONTENT_WIDTH,
+      align: "center",
+    });
 
   doc.end();
 
