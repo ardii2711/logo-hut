@@ -34,3 +34,10 @@ export async function loginHandler(req: Request, res: Response, next: NextFuncti
     next(error);
   }
 }
+
+export function logoutHandler(_req: Request, res: Response): void {
+  res.status(200).json({
+    success: true,
+    message: 'Logout berhasil',
+  });
+}
