@@ -13,6 +13,7 @@ import { AxiosError } from "axios";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -51,41 +52,37 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <main className="w-full pt-20 bg-surface min-h-[calc(100vh-160px)]">
+      <main className="w-full pt-20 bg-surface">
         {/* Ambient Background */}
-        <div className="relative w-full min-h-[calc(100vh-160px)] flex items-center justify-center py-space-xl px-margin md:px-margin-md lg:px-margin-lg overflow-hidden">
+        <div className="relative w-full flex items-center justify-center py-8 md:py-12 lg:py-16 px-margin md:px-margin-md lg:px-margin-lg overflow-hidden">
           <div className="absolute -top-32 -left-20 w-96 h-96 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
           <div className="absolute -bottom-32 -right-20 w-96 h-96 rounded-full bg-surface-variant/30 blur-3xl pointer-events-none"></div>
 
           {/* 2-Column Grid */}
-          <div className="relative w-full max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-lg lg:gap-space-xl items-center">
+          <div className="relative w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-lg lg:gap-space-xl items-center">
             {/* LEFT: Informasi Portal */}
-            <div className="lg:col-span-6 flex flex-col justify-center text-left py-space-md lg:pr-space-md">
+            <div className="lg:col-span-6 hidden md:flex flex-col justify-center text-left py-space-md lg:pr-space-md">
               {/* Status Badge */}
               <div className="inline-flex items-center gap-2 px-space-sm py-1 rounded-full bg-secondary-container/30 border border-secondary-container/40 text-secondary w-fit mb-space-md">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
-                <span className="font-label-mono text-label-mono text-[11px] font-semibold tracking-wider uppercase">
-                  Portal Resmi Panitia & Juri
-                </span>
+                <span className="text-label-mono text-[11px] font-semibold tracking-wider uppercase">Portal Resmi Panitia & Juri</span>
               </div>
 
               {/* Logo + Title */}
               <div className="flex items-center gap-space-md mb-space-md">
                 <div className="w-20 h-20 p-2 rounded-2xl bg-surface-container-lowest shadow-md border border-surface-container-high flex items-center justify-center shrink-0">
-                  <img src="/logo.png" alt="Logo Mamuju Tengah" className="h-full w-auto object-contain" />
+                  <Image src="/logo.png" width={20} height={20} alt="Logo Mamuju Tengah" className="h-full w-auto object-contain" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-label-mono text-label-mono text-secondary uppercase font-bold tracking-wider text-[11px]">
+                  <span className="font-label-mono text-label-mono text-secondary uppercase tracking-wider text-[11px]">
                     Pemerintah Kabupaten Mamuju Tengah
                   </span>
-                  <span className="font-label-md text-label-md text-on-surface-variant text-[12px]">
-                    Dinas Pariwisata, Pemuda dan Olahraga
-                  </span>
+                  <span className="font-label-md text-label-md text-on-surface-variant text-[12px]">Dinas Pariwisata, Pemuda dan Olahraga</span>
                 </div>
               </div>
 
               {/* Headline */}
-              <h1 className="font-headline-md text-headline-md lg:text-headline-lg font-bold text-on-surface tracking-tight leading-tight mb-space-sm">
+              <h1 className="font-headline-md text-headline-md lg:text-headline-lg text-on-surface tracking-tight leading-tight mb-space-sm">
                 Sayembara Desain Logo Peringatan HUT ke-14 Kabupaten Mamuju Tengah
               </h1>
 
@@ -108,17 +105,17 @@ export default function LoginPage() {
             </div>
 
             {/* RIGHT: Login Form Card */}
-            <div className="lg:col-span-6 w-full max-w-[480px] mx-auto lg:ml-auto">
+            <div className="lg:col-span-6 w-full max-w-md mx-auto lg:ml-auto">
               <div className="bg-surface-container-lowest rounded-xl shadow-xl p-space-lg sm:p-space-xl border border-surface-container-high relative overflow-hidden">
                 {/* Gradient Top Bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary via-secondary-fixed-dim to-on-surface"></div>
+                <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-secondary via-secondary-fixed-dim to-on-surface"></div>
 
                 {/* Header */}
                 <div className="flex flex-col text-left mb-space-lg">
-                  <span className="font-label-mono text-label-mono text-secondary uppercase font-semibold tracking-wider text-[11px] mb-1">
+                  <span className="font-label-mono text-label-mono text-secondary uppercase tracking-wider text-[11px] mb-1">
                     Autentikasi Pengguna
                   </span>
-                  <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Masuk Portal</h2>
+                  <h2 className="font-headline-sm text-headline-sm text-on-surface tracking-tight">Masuk Portal</h2>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Silakan masukkan akun panitia untuk melanjutkan.</p>
                 </div>
 
@@ -126,7 +123,7 @@ export default function LoginPage() {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-space-md">
                   {/* Email Field */}
                   <div className="space-y-1.5 text-left">
-                    <label htmlFor="email" className="block font-label-lg text-label-lg text-on-surface font-medium">
+                    <label htmlFor="email" className="block font-label-lg text-label-lg text-on-surface ">
                       Alamat Email Panitia <span className="text-error">*</span>
                     </label>
                     <div className="relative flex items-center">
@@ -138,7 +135,7 @@ export default function LoginPage() {
 
                   {/* Password Field */}
                   <div className="space-y-1.5 text-left">
-                    <label htmlFor="password" className="block font-label-lg text-label-lg text-on-surface font-medium">
+                    <label htmlFor="password" className="block font-label-lg text-label-lg text-on-surface">
                       Kata Sandi <span className="text-error">*</span>
                     </label>
                     <div className="relative flex items-center">
@@ -175,7 +172,7 @@ export default function LoginPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-11 rounded-lg bg-primary-container hover:bg-on-surface text-on-primary font-label-lg text-label-lg font-semibold flex items-center justify-center gap-space-xs shadow-md transition-all transform active:scale-[0.99] mt-space-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-11 cursor-pointer rounded-lg bg-primary-container hover:bg-on-surface/95 text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-space-xs shadow-md transition-all transform active:scale-[0.99] mt-space-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
