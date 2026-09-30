@@ -58,7 +58,6 @@ npm run dev
 
 ### Fase BE-2: Core Services
 
-**Branch:** `be/core-services`  
 **Durasi:** Hari 2 (1 Okt)  
 **Tujuan:** Services dan utilities yang reusable siap
 
@@ -106,7 +105,6 @@ console.log(generateSubmissionCode()); // MATENG-A3X9K2
 
 ### Fase BE-3: Submission API
 
-**Branch:** `be/submission-api`  
 **Durasi:** Hari 3-4 (2-3 Okt)  
 **Tujuan:** Endpoint submission publik berfungsi end-to-end
 
@@ -172,7 +170,6 @@ curl -X POST http://localhost:5000/api/submissions \
 
 ### Fase BE-4: Auth API
 
-**Branch:** `be/auth-api`  
 **Durasi:** Hari 5 (4 Okt)  
 **Tujuan:** Login admin berfungsi + verifikasi JWT
 
@@ -221,7 +218,6 @@ curl -X POST http://localhost:5000/api/auth/login \
 
 ### Fase BE-5: Admin API
 
-**Branch:** `be/admin-api`  
 **Durasi:** Hari 6 (5 Okt)  
 **Tujuan:** Endpoint dashboard admin berfungsi
 
@@ -270,7 +266,6 @@ curl http://localhost:5000/api/admin/submissions/{id} \
 
 ### Fase BE-6: Deploy Backend
 
-**Branch:** `be/deploy`  
 **Durasi:** Hari 7 (6 Okt)  
 **Tujuan:** Backend live di Render
 
@@ -313,7 +308,6 @@ curl -X POST https://xxx.onrender.com/api/submissions ...
 
 ### Fase FE-1: Setup & Layout
 
-**Branch:** `fe/setup`  
 **Durasi:** Hari 8 (7 Okt)  
 **Tujuan:** Boilerplate Next.js + komponen UI siap
 
@@ -361,7 +355,6 @@ npm run dev
 
 ### Fase FE-2: Halaman Publik
 
-**Branch:** `fe/public-pages`  
 **Durasi:** Hari 9-10 (8-9 Okt)  
 **Tujuan:** Form submission + halaman sukses berfungsi
 
@@ -417,7 +410,6 @@ npm run dev
 
 ### Fase FE-3: Halaman Admin
 
-**Branch:** `fe/admin-pages`  
 **Durasi:** Hari 11-12 (10-11 Okt)  
 **Tujuan:** Login admin + dashboard + detail berfungsi
 
@@ -482,7 +474,6 @@ npm run dev
 
 ### Fase FE-4: Deploy & Polish
 
-**Branch:** `fe/deploy`  
 **Durasi:** Hari 13-14 (12-13 Okt)  
 **Tujuan:** Frontend live di Vercel + UX dipoles
 
