@@ -1,17 +1,20 @@
 import { ShieldCheck } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
       <div className="h-16 sm:h-20 max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex items-center justify-between">
-        <div className="flex items-center gap-2 sm:gap-space-md">
+        <Link href="/" className="flex items-center gap-2 sm:gap-space-md">
           {/* Logo */}
           <Image src="/logo.png" alt="Logo" width={48} height={48} className="h-10 w-10 sm:h-12 sm:w-12 object-contain" />
+
           <div className="flex flex-col">
             <span className="text-sm sm:text-base md:text-xl text-on-surface tracking-tight leading-tight font-bold uppercase">HUT ke-14 Mamuju Tengah</span>
           </div>
-        </div>
+        </Link>
+
         <div className="flex items-center">
           <a
             href="/login"

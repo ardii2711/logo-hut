@@ -1,6 +1,11 @@
+"use client";
+
 import { Hourglass, BadgeCheck } from "lucide-react";
+import { useCountdown } from "@/hooks/use-countdown";
 
 export default function HeroSection() {
+  const { days, hours, minutes, status, loading } = useCountdown();
+
   return (
     <section className="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg pt-space-xl pb-margin">
       <div className="flex flex-col items-start max-w-5xl">
@@ -8,8 +13,14 @@ export default function HeroSection() {
         <div className="inline-flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-1.5 rounded-full shadow-sm mb-space-md">
           <span className="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
           <span className="text-[10px] sm:text-label-mono text-on-surface font-semibold tracking-wide uppercase">
-            <span className="hidden sm:inline">PENGUMPULAN DIBUKA • 1 – 15 OKT 2026</span>
-            <span className="sm:hidden">DIBUKA • 1–15 OKT 2026</span>
+            {status === "open" ? (
+              <>
+                <span className="hidden sm:inline">PENGUMPULAN DIBUKA • 1 – 15 OKT 2026</span>
+                <span className="sm:hidden">DIBUKA • 1–15 OKT 2026</span>
+              </>
+            ) : (
+              <span>PENGUMPULAN DITUTUP</span>
+            )}
           </span>
         </div>
 
@@ -30,8 +41,18 @@ export default function HeroSection() {
           <div className="flex items-center gap-space-xs">
             <Hourglass className="w-4 h-4 text-secondary" />
             <span>
-              <span className="font-semibold text-on-surface">15 hari lagi</span>
-              <span className="hidden sm:inline"> • Pengumpulan sampai 23:59 WITA</span>
+              {loading ? (
+                <span className="font-semibold text-on-surface">Memuat...</span>
+              ) : status === "closed" ? (
+                <span className="font-semibold text-error">Pendaftaran ditutup</span>
+              ) : (
+                <>
+                  <span className="font-semibold text-on-surface">
+                    {days} hari {hours} jam {minutes} menit lagi
+                  </span>
+                  <span className="hidden sm:inline"> • Pengumpulan sampai 23:59 WITA</span>
+                </>
+              )}
             </span>
           </div>
 

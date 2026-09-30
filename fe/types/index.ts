@@ -56,3 +56,15 @@ export interface ErrorResponse {
   success: false;
   error: string;
 }
+
+export interface DeadlineResponse {
+  deadline: string;
+  status: 'open' | 'closed';
+  remainingDays: number;
+  remainingHours: number;
+}
+
+export interface VerifyCodeResponse {
+  valid: boolean;
+  error?: string;
+}

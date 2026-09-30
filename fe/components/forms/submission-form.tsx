@@ -275,7 +275,7 @@ export default function SubmissionFormStitch() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-space-sm bg-secondary text-on-secondary hover:bg-on-secondary-container font-label-lg px-space-xl py-3.5 rounded-lg shadow-md transition-all active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed"
+            className="w-full cursor-pointer sm:w-auto inline-flex items-center justify-center gap-space-sm bg-secondary text-on-secondary hover:bg-on-secondary-container font-label-lg px-space-xl py-3.5 rounded-lg shadow-md transition-all active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
