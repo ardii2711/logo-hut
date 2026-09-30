@@ -76,17 +76,9 @@ Fase Rencana → Presentasi ke User → Persetujuan User → Eksekusi → Review
 
 ### 3.1 Strategi Branch
 
-- `main` - kode production ready
-- `be/nama-fase` - branch fitur backend
-- `fe/nama-fase` - branch fitur frontend
-
-**Contoh:**
-
-- `be/setup`
-- `be/submission-api`
-- `be/admin-api`
-- `fe/public-pages`
-- `fe/admin-dashboard`
+- `main` - semua development langsung di main
+- Tidak pakai feature branch
+- Commit langsung ke main
 
 ### 3.2 Konvensi Commit
 
@@ -130,11 +122,10 @@ Contoh:
 [BE] Tambah validasi
 ```
 
-### 3.4 Jangan Pernah Push ke Main
+### 3.4 Push ke Main
 
-- Selalu kerja di feature branch
-- Merge ke main hanya setelah user approve
-- Gunakan `git merge --no-ff` untuk preserve history
+- Commit langsung ke main setelah selesai fase
+- Push setelah user approve fase
 
 ---
 

@@ -10,7 +10,6 @@
 
 ### Fase BE-1: Setup Infrastructure
 
-**Branch:** `be/setup`  
 **Durasi:** Hari 1 (30 Sept)  
 **Tujuan:** Skeleton proyek + database siap
 
