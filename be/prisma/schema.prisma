@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,19 +8,19 @@ datasource db {
 }
 
 model Submission {
-  id              String   @id @default(uuid())
-  submissionCode  String   @unique @map("submission_code")
-  name            String
-  whatsapp        String   @unique
-  email           String   @unique
-  ktpFilePath     String   @map("ktp_file_path")
-  logoFilePath    String   @map("logo_file_path")
-  title           String
-  description     String   @db.Text
-  createdAt       DateTime @default(now()) @map("created_at")
+  id             String   @id @default(uuid())
+  submissionCode String   @unique @map("submission_code")
+  name           String
+  whatsapp       String   @unique
+  email          String   @unique
+  ktpFilePath    String   @map("ktp_file_path")
+  logoFilePath   String   @map("logo_file_path")
+  title          String
+  description    String
+  createdAt      DateTime @default(now()) @map("created_at")
 
-  @@map("submissions")
   @@index([email])
   @@index([whatsapp])
   @@index([submissionCode])
+  @@map("submissions")
 }
