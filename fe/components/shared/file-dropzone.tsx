@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import { CloudUpload, CreditCard, FileText, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 interface FileDropzoneProps {
   label: string;
@@ -92,9 +91,11 @@ export default function FileDropzone({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-label-lg text-on-surface">
-        {label} <span className="text-error">*</span>
-      </label>
+      {label && (
+        <label className="text-label-lg text-on-surface">
+          {label} <span className="text-error">*</span>
+        </label>
+      )}
       
       {!file ? (
         <div
@@ -131,7 +132,7 @@ export default function FileDropzone({
         <div className="border border-outline-variant rounded-xl p-space-md bg-surface-container-lowest">
           {preview ? (
             <div className="mb-3">
-              <Image
+              <img
                 src={preview}
                 alt="Preview"
                 className="w-full h-48 object-contain bg-surface-container-low rounded-lg"

@@ -17,7 +17,7 @@ export default function SidebarSection() {
             </div>
             <div>
               <span className="text-label-lg text-on-surface font-semibold block leading-tight">
-                Pengiriman Karya Online
+                Pendaftaran
               </span>
               <span className="text-body-sm text-on-surface-variant">
                 29 September – 15 Oktober 2026
@@ -32,10 +32,10 @@ export default function SidebarSection() {
             </div>
             <div>
               <span className="text-label-lg text-on-surface font-semibold block leading-tight">
-                Verifikasi Administrasi KTP
+                Pengiriman Karya Logo
               </span>
               <span className="text-body-sm text-on-surface-variant">
-                16 – 18 Oktober 2026
+                1 – 15 Oktober 2026
               </span>
             </div>
           </div>
@@ -47,10 +47,10 @@ export default function SidebarSection() {
             </div>
             <div>
               <span className="text-label-lg text-on-surface font-semibold block leading-tight">
-                Penjurian & Kurasi 5 Besar
+                Penjurian / Penilaian
               </span>
               <span className="text-body-sm text-on-surface-variant">
-                19 – 23 Oktober 2026
+                16 - 19 Oktober 2026
               </span>
             </div>
           </div>
@@ -65,7 +65,7 @@ export default function SidebarSection() {
                 Pengumuman Pemenang
               </span>
               <span className="text-body-sm text-on-surface-variant">
-                Puncak Peringatan Hari Jadi Mateng
+                19 Oktober 2026
               </span>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function SidebarSection() {
       </div>
 
       {/* Total Hadiah */}
-      <div className="bg-gradient-to-br from-surface-container-high to-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+      <div className="bg-linear-to-br from-surface-container-high to-surface-container-lowest p-space-lg rounded-xl shadow-sm">
         <div className="flex items-center gap-space-sm mb-space-sm">
           <Award className="w-6 h-6 text-on-tertiary-container" />
           <span className="text-label-mono uppercase text-on-surface font-bold tracking-wider">
@@ -81,17 +81,11 @@ export default function SidebarSection() {
           </span>
         </div>
         <p className="text-headline-sm text-on-surface font-black">
-          Total Hadiah Puluhan Juta Rupiah
+          Total Hadiah 5 Juta Rupiah
         </p>
         <p className="text-body-sm text-on-surface-variant mt-1 mb-space-md">
-          Juara Utama mendapatkan Piagam Penghargaan Resmi Bupati Mamuju Tengah serta hak pengenaan logo pada seluruh publikasi resmi Pemkab.
+          Juara Utama mendapatkan Piagam Penghargaan Resmi Bupati Mamuju Tengah serta hak pengenaan logo pada kegiatan dan publikasi HUT Mateng ke-14.
         </p>
-        <div className="p-space-sm bg-surface-container-lowest rounded-lg shadow-sm flex items-center justify-between">
-          <span className="text-body-sm text-on-surface">Pajak Hadiah</span>
-          <span className="text-label-mono text-secondary font-semibold">
-            Ditanggung Penyelenggara
-          </span>
-        </div>
       </div>
 
       {/* FAQ */}
@@ -121,7 +115,7 @@ export default function SidebarSection() {
               Kapan file vektor master diminta?
             </span>
             <p className="text-body-sm text-on-surface-variant mt-0.5">
-              File master (AI / CDR / EPS) hanya diminta panitia kepada finalis 5 besar terkurasi.
+              File master (AI / CDR / EPS) hanya diminta panitia kepada pemenang.
             </p>
           </div>
         </div>
@@ -130,7 +124,7 @@ export default function SidebarSection() {
         <div className="mt-space-lg pt-space-md border-t border-outline-variant/30 flex items-center justify-between text-on-surface-variant">
           <span className="text-body-sm">Ada kendala teknis?</span>
           <a
-            href="https://wa.me/628219876XXXX"
+            href="https://wa.me/6281244846160"
             target="_blank"
             rel="noopener noreferrer"
             className="text-label-lg text-secondary hover:underline flex items-center gap-1"

@@ -27,7 +27,7 @@ export default function PanelCard({
             <p className="text-body-sm text-on-surface-variant">{description}</p>
           </div>
         </div>
-        <span className="text-label-mono bg-surface-container-low text-on-surface-variant px-space-sm py-1 rounded">
+        <span className="hidden sm:inline text-label-mono bg-surface-container-low text-on-surface-variant px-space-sm py-1 rounded">
           {stepLabel}
         </span>
       </div>
