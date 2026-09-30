@@ -1,8 +1,9 @@
 import { Router } from 'express';
+import { uploadSubmission } from '../middleware/upload.middleware';
+import * as submissionController from '../controllers/submission.controller';
 
 const router = Router();
 
-// POST /api/submissions - akan diimplementasi di BE-3
-// router.post('/', upload.fields([...]), submissionController.create);
+router.post('/', uploadSubmission, submissionController.create);
 
 export default router;
