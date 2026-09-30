@@ -1,26 +1,256 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Fonts */
+  --font-sans: var(--font-plus-jakarta);
+  --font-mono: var(--font-inter);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Surface Colors */
+  --color-surface: #f8f9ff;
+  --color-surface-dim: #cbdbf5;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-container-highest: #d3e4fe;
+  --color-surface-variant: #d3e4fe;
+
+  /* Primary (Navy) */
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #131b2e;
+  --color-on-primary-container: #7c839b;
+  --color-primary-fixed: #dae2fd;
+  --color-primary-fixed-dim: #bec6e0;
+  --color-on-primary-fixed: #131b2e;
+  --color-on-primary-fixed-variant: #3f465c;
+  --color-inverse-primary: #bec6e0;
+
+  /* Secondary (Teal) */
+  --color-secondary: #006a61;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #86f2e4;
+  --color-on-secondary-container: #006f66;
+  --color-secondary-fixed: #89f5e7;
+  --color-secondary-fixed-dim: #6bd8cb;
+  --color-on-secondary-fixed: #00201d;
+  --color-on-secondary-fixed-variant: #005049;
+
+  /* Tertiary (Amber/Gold) */
+  --color-tertiary: #000000;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #2f1500;
+  --color-on-tertiary-container: #c76c00;
+  --color-tertiary-fixed: #ffdcc3;
+  --color-tertiary-fixed-dim: #ffb77d;
+  --color-on-tertiary-fixed: #2f1500;
+  --color-on-tertiary-fixed-variant: #6e3900;
+
+  /* On-Surface */
+  --color-on-surface: #0b1c30;
+  --color-on-surface-variant: #45464d;
+  --color-inverse-surface: #213145;
+  --color-inverse-on-surface: #eaf1ff;
+
+  /* Background */
+  --color-background: #f8f9ff;
+  --color-on-background: #0b1c30;
+
+  /* Error */
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* Outline */
+  --color-outline: #76777d;
+  --color-outline-variant: #c6c6cd;
+  --color-surface-tint: #565e74;
+
+  /* Spacing */
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xl: 2.5rem;
+  --spacing-gutter-sm: 1rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-gutter-lg: 2rem;
+  --spacing-margin: 1.5rem;
+  --spacing-margin-md: 3rem;
+  --spacing-margin-lg: 5rem;
+
+  /* Border Radius */
+  --radius: 0.5rem;
+  --radius-sm: 0.25rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Typography Scale */
+  --font-size-display-hero: 3.5rem;
+  --line-height-display-hero: 1.1;
+  --letter-spacing-display-hero: -0.03em;
+  --font-weight-display-hero: 800;
+
+  --font-size-display-hero-mobile: 2.25rem;
+  --line-height-display-hero-mobile: 1.15;
+  --letter-spacing-display-hero-mobile: -0.02em;
+  --font-weight-display-hero-mobile: 800;
+
+  --font-size-headline-lg: 2.5rem;
+  --line-height-headline-lg: 1.2;
+  --letter-spacing-headline-lg: -0.025em;
+  --font-weight-headline-lg: 700;
+
+  --font-size-headline-lg-mobile: 1.75rem;
+  --line-height-headline-lg-mobile: 1.25;
+  --letter-spacing-headline-lg-mobile: -0.02em;
+  --font-weight-headline-lg-mobile: 700;
+
+  --font-size-headline-md: 1.75rem;
+  --line-height-headline-md: 1.3;
+  --letter-spacing-headline-md: -0.015em;
+  --font-weight-headline-md: 600;
+
+  --font-size-headline-sm: 1.25rem;
+  --line-height-headline-sm: 1.4;
+  --letter-spacing-headline-sm: -0.01em;
+  --font-weight-headline-sm: 600;
+
+  --font-size-title-md: 1.125rem;
+  --line-height-title-md: 1.4;
+  --font-weight-title-md: 600;
+
+  --font-size-body-lg: 1.125rem;
+  --line-height-body-lg: 1.6;
+  --font-weight-body-lg: 400;
+
+  --font-size-body-md: 0.9375rem;
+  --line-height-body-md: 1.55;
+  --font-weight-body-md: 400;
+
+  --font-size-body-sm: 0.8125rem;
+  --line-height-body-sm: 1.5;
+  --font-weight-body-sm: 400;
+
+  --font-size-label-lg: 0.875rem;
+  --line-height-label-lg: 1.25;
+  --letter-spacing-label-lg: 0.01em;
+  --font-weight-label-lg: 600;
+
+  --font-size-label-md: 0.75rem;
+  --line-height-label-md: 1.2;
+  --letter-spacing-label-md: 0.04em;
+  --font-weight-label-md: 600;
+
+  --font-size-label-mono: 0.75rem;
+  --line-height-label-mono: 1.2;
+  --letter-spacing-label-mono: 0.06em;
+  --font-weight-label-mono: 500;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body-md);
+  line-height: var(--line-height-body-md);
+}
+
+/* Typography utility classes */
+.text-display-hero {
+  font-size: var(--font-size-display-hero);
+  line-height: var(--line-height-display-hero);
+  letter-spacing: var(--letter-spacing-display-hero);
+  font-weight: var(--font-weight-display-hero);
+}
+
+.text-display-hero-mobile {
+  font-size: var(--font-size-display-hero-mobile);
+  line-height: var(--line-height-display-hero-mobile);
+  letter-spacing: var(--letter-spacing-display-hero-mobile);
+  font-weight: var(--font-weight-display-hero-mobile);
+}
+
+.text-headline-lg {
+  font-size: var(--font-size-headline-lg);
+  line-height: var(--line-height-headline-lg);
+  letter-spacing: var(--letter-spacing-headline-lg);
+  font-weight: var(--font-weight-headline-lg);
+}
+
+.text-headline-lg-mobile {
+  font-size: var(--font-size-headline-lg-mobile);
+  line-height: var(--line-height-headline-lg-mobile);
+  letter-spacing: var(--letter-spacing-headline-lg-mobile);
+  font-weight: var(--font-weight-headline-lg-mobile);
+}
+
+.text-headline-md {
+  font-size: var(--font-size-headline-md);
+  line-height: var(--line-height-headline-md);
+  letter-spacing: var(--letter-spacing-headline-md);
+  font-weight: var(--font-weight-headline-md);
+}
+
+.text-headline-sm {
+  font-size: var(--font-size-headline-sm);
+  line-height: var(--line-height-headline-sm);
+  letter-spacing: var(--letter-spacing-headline-sm);
+  font-weight: var(--font-weight-headline-sm);
+}
+
+.text-title-md {
+  font-size: var(--font-size-title-md);
+  line-height: var(--line-height-title-md);
+  font-weight: var(--font-weight-title-md);
+}
+
+.text-body-lg {
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-body-lg);
+  font-weight: var(--font-weight-body-lg);
+}
+
+.text-body-md {
+  font-size: var(--font-size-body-md);
+  line-height: var(--line-height-body-md);
+  font-weight: var(--font-weight-body-md);
+}
+
+.text-body-sm {
+  font-size: var(--font-size-body-sm);
+  line-height: var(--line-height-body-sm);
+  font-weight: var(--font-weight-body-sm);
+}
+
+.text-label-lg {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label-lg);
+  line-height: var(--line-height-label-lg);
+  letter-spacing: var(--letter-spacing-label-lg);
+  font-weight: var(--font-weight-label-lg);
+}
+
+.text-label-md {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label-md);
+  line-height: var(--line-height-label-md);
+  letter-spacing: var(--letter-spacing-label-md);
+  font-weight: var(--font-weight-label-md);
+}
+
+.text-label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-label-mono);
+  line-height: var(--line-height-label-mono);
+  letter-spacing: var(--letter-spacing-label-mono);
+  font-weight: var(--font-weight-label-mono);
+}
+
+/* Custom focus ring for Stitch design */
+.focus-ring-secondary {
+  @apply focus:outline-none focus:ring-2 focus:ring-secondary/25;
 }
