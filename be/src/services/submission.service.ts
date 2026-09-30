@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import { uploadFile, deleteFile } from './storage.service';
 import { generateSubmissionCode } from '../utils/generate-code';
 import { normalizeWhatsApp } from '../utils/normalize-phone';
 import { randomUUID } from 'crypto';
-
-const prisma = new PrismaClient();
 
 interface CreateSubmissionData {
   name: string;
