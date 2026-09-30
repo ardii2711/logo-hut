@@ -12,3 +12,21 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Submission {
+  id              String   @id @default(uuid())
+  submissionCode  String   @unique @map("submission_code")
+  name            String
+  whatsapp        String   @unique
+  email           String   @unique
+  ktpFilePath     String   @map("ktp_file_path")
+  logoFilePath    String   @map("logo_file_path")
+  title           String
+  description     String   @db.Text
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("submissions")
+  @@index([email])
+  @@index([whatsapp])
+  @@index([submissionCode])
+}
