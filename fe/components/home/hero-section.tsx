@@ -48,9 +48,8 @@ export default function HeroSection() {
               ) : (
                 <>
                   <span className="font-semibold text-on-surface">
-                    {days} hari {hours} jam {minutes} menit lagi
+                    {days} hari {hours} jam {minutes} menit lagi pengumpulan karya logo
                   </span>
-                  <span className="hidden sm:inline"> • Pengumpulan sampai 23:59 WITA</span>
                 </>
               )}
             </span>

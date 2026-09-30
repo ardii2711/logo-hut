@@ -260,7 +260,7 @@ export default function SubmissionFormStitch() {
             htmlFor="pernyataanHak"
             className="text-body-sm text-on-surface cursor-pointer select-none"
           >
-            Saya menyatakan dengan sesungguhnya bahwa karya desain logo yang diajukan adalah murni hasil karya orisinal pribadi, belum pernah dipublikasikan, serta bebas dari segala bentuk plagiasi atau klaim hak cipta pihak manapun. Jika terpilih, hak cipta logo menjadi milik Pemerintah Kabupaten Mamuju Tengah.
+            Saya menyatakan dengan sesungguhnya bahwa karya desain logo yang diajukan adalah murni hasil karya orisinal pribadi, belum pernah dipublikasikan, serta bebas dari segala bentuk plagiasi atau klaim hak cipta pihak manapun.
           </label>
         </div>
 

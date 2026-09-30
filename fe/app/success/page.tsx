@@ -1,24 +1,17 @@
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
-
 import { useSearchParams, useRouter } from "next/navigation";
-
 import { CheckCircle2, Copy, Check, Hash, MessageSquare, Download, ExternalLink, Loader2 } from "lucide-react";
-
 import Header from "@/components/layout/header";
-
 import Footer from "@/components/layout/footer";
-
 import { Badge } from "@/components/ui/badge";
 import api from "@/lib/api";
 import { VerifyCodeResponse } from "@/types";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-
   const router = useRouter();
-
   const code = searchParams.get("code");
 
   const [copied, setCopied] = useState(false);
@@ -48,9 +41,7 @@ function SuccessContent() {
   const handleCopy = async () => {
     if (code) {
       await navigator.clipboard.writeText(code);
-
       setCopied(true);
-
       setTimeout(() => setCopied(false), 2500);
     }
   };
@@ -171,7 +162,7 @@ function SuccessContent() {
                 {/* Download PDF Button */}
                 <button
                   onClick={handleDownloadPDF}
-                  className="mt-auto w-full inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3.5 rounded-lg bg-primary text-on-primary text-label-lg font-semibold hover:bg-primary/90 transition-all shadow-md"
+                  className="mt-auto cursor-pointer w-full inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3.5 rounded-lg bg-primary text-on-primary text-label-lg font-semibold hover:bg-primary/90 transition-all shadow-md"
                 >
                   <Download className="w-5 h-5" />
                   <span className="text-sm sm:text-base">Unduh Bukti Pengiriman (PDF)</span>
