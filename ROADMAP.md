@@ -538,7 +538,7 @@ npm run dev
 
 ### Backend ✓
 
-- [ ] BE-1: Setup selesai
+- [x] BE-1: Setup selesai
 - [ ] BE-2: Services selesai
 - [ ] BE-3: Submission API selesai
 - [ ] BE-4: Auth API selesai
@@ -570,8 +570,14 @@ npm run dev
 ## Status Saat Ini
 
 **Hari ini:** 30 September 2026 (H+1)  
-**Selanjutnya:** Mulai BE-1 (Setup Infrastructure)  
-**Siap dimulai:** Menunggu approval untuk Fase BE-1
+**Fase saat ini:** BE-2 (Core Services)  
+**Progress BE-1:** ✅ SELESAI
+- ✅ Express + TypeScript + Prisma v7
+- ✅ Migration database + Prisma Client
+- ✅ Routes wired ke Express app
+- ✅ Supabase config ready
+
+**Selanjutnya:** BE-2 Commit 1 (Storage Service)
 
 ---
 
