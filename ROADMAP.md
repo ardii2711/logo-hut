@@ -570,14 +570,19 @@ npm run dev
 ## Status Saat Ini
 
 **Hari ini:** 30 September 2026 (H+1)  
-**Fase saat ini:** BE-2 (Core Services)  
-**Progress BE-1:** ✅ SELESAI
+**Fase saat ini:** BE-6 (Deploy Preparation)  
+**Progress Backend:** ✅ SELESAI (BE-1 hingga BE-5)
 - ✅ Express + TypeScript + Prisma v7
 - ✅ Migration database + Prisma Client
 - ✅ Routes wired ke Express app
 - ✅ Supabase config ready
+- ✅ Core services (utils, validation)
+- ✅ Submission API (public)
+- ✅ Auth API (login + JWT)
+- ✅ Admin API (list, search, pagination, detail)
+- ✅ Security fixes (rate limiting, CORS, request limits, graceful shutdown)
 
-**Selanjutnya:** BE-2 Commit 1 (Storage Service)
+**Selanjutnya:** BE-6 (Deploy ke Render) atau FE-1 (Frontend Development)
 
 ---
 
@@ -590,3 +595,4 @@ npm run dev
 - Backend selesai dulu baru mulai frontend
 - Selalu baca dokumentasi library via Context7 sebelum implementasi
 - Jika ragu atau tidak tahu → katakan dan query docs dulu
+- npm audit vulnerabilities: Documented, skip fix untuk MVP (Prisma v7 dependencies, tidak critical untuk PostgreSQL usage)
