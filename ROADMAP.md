@@ -539,15 +539,15 @@ npm run dev
 ### Backend ✓
 
 - [x] BE-1: Setup selesai
-- [ ] BE-2: Services selesai
-- [ ] BE-3: Submission API selesai
-- [ ] BE-4: Auth API selesai
-- [ ] BE-5: Admin API selesai
+- [x] BE-2: Services selesai
+- [x] BE-3: Submission API selesai
+- [x] BE-4: Auth API selesai
+- [x] BE-5: Admin API selesai
 - [ ] BE-6: Deployed ke Render
 
 ### Frontend ✓
 
-- [ ] FE-1: Setup selesai
+- [x] FE-1: Setup selesai
 - [ ] FE-2: Halaman publik selesai
 - [ ] FE-3: Halaman admin selesai
 - [ ] FE-4: Deployed ke Vercel
@@ -570,7 +570,7 @@ npm run dev
 ## Status Saat Ini
 
 **Hari ini:** 30 September 2026 (H+1)  
-**Fase saat ini:** BE-6 (Deploy Preparation)  
+**Fase saat ini:** FE-2 (Halaman Publik)  
 **Progress Backend:** ✅ SELESAI (BE-1 hingga BE-5)
 - ✅ Express + TypeScript + Prisma v7
 - ✅ Migration database + Prisma Client
@@ -582,7 +582,16 @@ npm run dev
 - ✅ Admin API (list, search, pagination, detail)
 - ✅ Security fixes (rate limiting, CORS, request limits, graceful shutdown)
 
-**Selanjutnya:** BE-6 (Deploy ke Render) atau FE-1 (Frontend Development)
+**Progress Frontend:** ✅ FE-1 SELESAI
+- ✅ Next.js 14+ + TypeScript + Tailwind v4
+- ✅ shadcn/ui components (8 komponen)
+- ✅ API client (axios + interceptors)
+- ✅ Auth context (useAuth hook)
+- ✅ TypeScript types lengkap
+- ✅ Hooks utilities (useAuth, useDebounce)
+- ✅ Build sukses tanpa error
+
+**Selanjutnya:** FE-2 (Form submission + success page)
 
 ---
 
