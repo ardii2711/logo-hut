@@ -193,22 +193,7 @@ export const generateReceiptPDF = (submission: Submission): PDFKit.PDFDocument =
     .stroke();
 
   // Philosophy / Description
-  doc
-    .font("Helvetica-Bold")
-    .fontSize(7.5)
-    .fillColor(COLORS.muted)
-    .text("FILOSOFI / NARASI KARYA", LEFT + 20, y + 68);
-
-  doc
-    .font("Helvetica")
-    .fontSize(9)
-    .fillColor(COLORS.text)
-    .text(submission.description || "-", LEFT + 20, y + 82, {
-      width: CONTENT_WIDTH - 40,
-      height: 85,
-      align: "justify",
-      lineGap: 3,
-    });
+  // ponytail: filosofi now in separate PDF file, remove from receipt
 
   y += workCardHeight + 20;
 

@@ -1,5 +1,5 @@
 import { prisma } from '../config/prisma';
-import { getSignedUrl } from './storage.service';
+import { getPublicUrl } from './storage.service';
 
 interface ListSubmissionsParams {
   search?: string;
@@ -62,26 +62,7 @@ export async function getSubmissionDetail(id: string) {
     throw new Error('Submission tidak ditemukan');
   }
 
-  // Generate signed URLs (expire in 1 hour = 3600s)
-  // ponytail: graceful fallback if file missing
-  let ktpFileUrl = '';
-  let logoFileUrl = '';
-
-  try {
-    [ktpFileUrl, logoFileUrl] = await Promise.all([
-      getSignedUrl('submissions', submission.ktpFilePath, 3600).catch((err) => {
-        console.warn(`KTP file not found: ${submission.ktpFilePath}`, err.message);
-        return ''; // Return empty string if file missing
-      }),
-      getSignedUrl('submissions', submission.logoFilePath, 3600).catch((err) => {
-        console.warn(`Logo file not found: ${submission.logoFilePath}`, err.message);
-        return ''; // Return empty string if file missing
-      }),
-    ]);
-  } catch (error) {
-    console.error('Error generating signed URLs:', error);
-  }
-
+  // ponytail: public bucket, direct URLs
   return {
     id: submission.id,
     submissionCode: submission.submissionCode,
@@ -89,9 +70,14 @@ export async function getSubmissionDetail(id: string) {
     email: submission.email,
     whatsapp: submission.whatsapp,
     title: submission.title,
-    description: submission.description,
-    ktpFileUrl,
-    logoFileUrl,
+    files: {
+      ktp: getPublicUrl(submission.ktpFilePath),
+      logoVector: getPublicUrl(submission.logoVectorFilePath),
+      logoPng: getPublicUrl(submission.logoPngFilePath),
+      logoJpeg: getPublicUrl(submission.logoJpegFilePath),
+      filosofiPdf: getPublicUrl(submission.filosofiPdfFilePath),
+      suratPernyataan: getPublicUrl(submission.suratPernyataanFilePath),
+    },
     createdAt: submission.createdAt,
   };
 }

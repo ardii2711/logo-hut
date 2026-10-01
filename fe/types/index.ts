@@ -5,15 +5,25 @@ export interface Submission {
   email: string;
   whatsapp: string;
   title: string;
-  description: string;
-  ktpFilePath: string;
-  logoFilePath: string;
   createdAt: string;
 }
 
-export interface SubmissionDetail extends Submission {
-  ktpFileUrl: string;
-  logoFileUrl: string;
+export interface SubmissionDetail {
+  id: string;
+  submissionCode: string;
+  name: string;
+  email: string;
+  whatsapp: string;
+  title: string;
+  files: {
+    ktp: string;
+    logoVector: string;
+    logoPng: string;
+    logoJpeg: string;
+    filosofiPdf: string;
+    suratPernyataan: string;
+  };
+  createdAt: string;
 }
 
 export interface SubmissionListResponse {

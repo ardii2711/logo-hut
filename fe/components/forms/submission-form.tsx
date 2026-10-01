@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Send, Hash } from "lucide-react";
 import { SubmissionFormData, submissionSchema } from "@/lib/validations/submission.schema";
 import { InputStitch } from "@/components/ui/input-stitch";
-import { TextareaStitch } from "@/components/ui/textarea-stitch";
 import FileDropzone from "@/components/shared/file-dropzone";
 import PanelCard from "@/components/shared/panel-card";
 import api from "@/lib/api";
@@ -17,7 +16,6 @@ import { AxiosError } from "axios";
 export default function SubmissionFormStitch() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
-  const [charCount, setCharCount] = useState(0);
 
   const {
     register,
@@ -30,29 +28,28 @@ export default function SubmissionFormStitch() {
   });
 
   const ktpFile = watch("ktp_file");
-  const logoFile = watch("logo_file");
-  const description = watch("description") || "";
-
-  // Update character count
-  useEffect(() => {
-    setCharCount(description.length);
-  }, [description]);
+  const logoVectorFile = watch("logo_vector_file");
+  const logoPngFile = watch("logo_png_file");
+  const logoJpegFile = watch("logo_jpeg_file");
+  const filosofiPdfFile = watch("filosofi_pdf_file");
+  const suratPernyataanFile = watch("surat_pernyataan_file");
 
   const onSubmit = async (data: SubmissionFormData) => {
     setServerError(null);
 
     try {
-      // Build FormData
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("whatsapp", data.whatsapp);
       formData.append("title", data.title);
-      formData.append("description", data.description);
       formData.append("ktp_file", data.ktp_file[0]);
-      formData.append("logo_file", data.logo_file[0]);
+      formData.append("logo_vector_file", data.logo_vector_file[0]);
+      formData.append("logo_png_file", data.logo_png_file[0]);
+      formData.append("logo_jpeg_file", data.logo_jpeg_file[0]);
+      formData.append("filosofi_pdf_file", data.filosofi_pdf_file[0]);
+      formData.append("surat_pernyataan_file", data.surat_pernyataan_file[0]);
 
-      // Submit to API
       const response = await api.post<SubmissionCreateResponse>(
         "/submissions",
         formData,
@@ -63,10 +60,8 @@ export default function SubmissionFormStitch() {
         }
       );
 
-      // Redirect to success page
       router.push(`/success?code=${response.data.data.submissionCode}`);
     } catch (error) {
-      // Handle errors
       if (error instanceof AxiosError && error.response?.data) {
         const errorData = error.response.data as ErrorResponse;
         setServerError(errorData.error);
@@ -76,14 +71,12 @@ export default function SubmissionFormStitch() {
         setServerError("Terjadi kesalahan, coba lagi");
       }
 
-      // Scroll to error
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-space-lg">
-      {/* Server Error Alert */}
       {serverError && (
         <div className="p-space-md bg-error-container border border-error rounded-lg">
           <p className="text-body-sm text-error font-semibold">{serverError}</p>
@@ -98,7 +91,6 @@ export default function SubmissionFormStitch() {
         stepLabel="Langkah 1/3"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-          {/* Nama Lengkap */}
           <div className="md:col-span-2 flex flex-col gap-1.5">
             <label className="text-label-lg text-on-surface" htmlFor="name">
               Nama Lengkap (Sesuai KTP) <span className="text-error">*</span>
@@ -114,7 +106,6 @@ export default function SubmissionFormStitch() {
             )}
           </div>
 
-          {/* WhatsApp */}
           <div className="flex flex-col gap-1.5">
             <label className="text-label-lg text-on-surface" htmlFor="whatsapp">
               Nomor WhatsApp Aktif <span className="text-error">*</span>
@@ -131,7 +122,6 @@ export default function SubmissionFormStitch() {
             )}
           </div>
 
-          {/* Email */}
           <div className="flex flex-col gap-1.5">
             <label className="text-label-lg text-on-surface" htmlFor="email">
               Alamat Email Aktif <span className="text-error">*</span>
@@ -148,7 +138,6 @@ export default function SubmissionFormStitch() {
             )}
           </div>
 
-          {/* KTP Upload */}
           <div className="md:col-span-2 mt-space-xs">
             <FileDropzone
               label="Upload Dokumen KTP Mamuju Tengah"
@@ -165,22 +154,21 @@ export default function SubmissionFormStitch() {
         </div>
       </PanelCard>
 
-      {/* PANEL 2: Karya Logo & Narasi */}
+      {/* PANEL 2: File Logo */}
       <PanelCard
         stepNumber={2}
-        title="Karya Logo & Narasi Filosofi"
-        description="Unggah aset visual beresolusi tinggi beserta argumentasi konseptual"
+        title="File Logo"
+        description="Unggah file logo dalam berbagai format sesuai persyaratan"
         stepLabel="Langkah 2/3"
       >
         <div className="flex flex-col gap-space-md">
-          {/* Judul Karya */}
           <div className="flex flex-col gap-1.5">
             <label className="text-label-lg text-on-surface" htmlFor="title">
-              Judul / Tema Spesifik Karya Logo <span className="text-error">*</span>
+              Judul Karya Logo <span className="text-error">*</span>
             </label>
             <InputStitch
               id="title"
-              placeholder="Contoh: Harmoni Lalla Tassisara Menuju Mamuju Tengah Gemilang"
+              placeholder="Contoh: Harmoni Agropolitan Mamuju Tengah"
               {...register("title")}
               disabled={isSubmitting}
             />
@@ -189,87 +177,98 @@ export default function SubmissionFormStitch() {
             )}
           </div>
 
-          {/* Logo Upload */}
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
-              <span className="text-label-lg text-on-surface">
-                Upload Berkas Logo Final <span className="text-error">*</span>
-              </span>
-              <span className="text-label-mono text-secondary">
-                Disarankan Background Transparan
-              </span>
-            </div>
-            <FileDropzone
-              label=""
-              accept=".png,.jpg,.jpeg"
-              maxSizeMB={10}
-              value={logoFile}
-              onChange={(files) => setValue("logo_file", files as FileList | null)}
-              error={errors.logo_file?.message?.toString()}
-              disabled={isSubmitting}
-              icon="upload"
-              description="Format: PNG atau JPEG Resolusi Tinggi (Maks. 10 MB)"
-            />
-          </div>
+          <FileDropzone
+            label="File Vektor Logo (AI/CDR/EPS/PDF)"
+            accept=".ai,.cdr,.eps,.pdf"
+            maxSizeMB={45}
+            value={logoVectorFile}
+            onChange={(files) => setValue("logo_vector_file", files as FileList | null)}
+            error={errors.logo_vector_file?.message?.toString()}
+            disabled={isSubmitting}
+            icon="upload"
+            description="File editable asli. Format: AI, CDR, EPS, atau PDF vektor (Maks. 45 MB)"
+          />
 
-          {/* Deskripsi & Filosofi */}
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
-              <label className="text-label-lg text-on-surface" htmlFor="description">
-                Deskripsi & Narasi Filosofi Logo <span className="text-error">*</span>
-              </label>
-              <span className={`text-label-mono ${charCount > 2000 ? 'text-error' : 'text-on-surface-variant'}`}>
-                {charCount} / 2000 Karakter
-              </span>
-            </div>
-            <TextareaStitch
-              id="description"
-              rows={6}
-              placeholder="Jelaskan makna, filosofi, elemen visual, dan warna yang digunakan serta pesan yang ingin disampaikan melalui logo."
-              {...register("description")}
-              onChange={(e) => {
-                register("description").onChange(e);
-                setCharCount(e.target.value.length);
-              }}
-              disabled={isSubmitting}
-            />
-            {errors.description && (
-              <p className="text-body-sm text-error">{errors.description.message}</p>
-            )}
-          </div>
+          <FileDropzone
+            label="Logo PNG Transparan"
+            accept=".png"
+            maxSizeMB={10}
+            value={logoPngFile}
+            onChange={(files) => setValue("logo_png_file", files as FileList | null)}
+            error={errors.logo_png_file?.message?.toString()}
+            disabled={isSubmitting}
+            icon="upload"
+            description="Format: PNG dengan background transparan (Maks. 10 MB)"
+          />
+
+          <FileDropzone
+            label="Logo JPEG High-Res"
+            accept=".jpg,.jpeg"
+            maxSizeMB={10}
+            value={logoJpegFile}
+            onChange={(files) => setValue("logo_jpeg_file", files as FileList | null)}
+            error={errors.logo_jpeg_file?.message?.toString()}
+            disabled={isSubmitting}
+            icon="upload"
+            description="Format: JPEG resolusi tinggi (Maks. 10 MB)"
+          />
         </div>
       </PanelCard>
 
-      {/* PANEL 3: Pernyataan & Finalisasi */}
+      {/* PANEL 3: Dokumen Pendukung */}
       <PanelCard
         stepNumber={3}
-        title="Pernyataan & Finalisasi Pengiriman"
-        description="Validasi hukum orisinalitas hak cipta desain"
+        title="Dokumen Pendukung"
+        description="Upload filosofi logo dan surat pernyataan keaslian"
         stepLabel="Langkah 3/3"
       >
-        {/* Checkbox Pernyataan */}
-        <div className="p-space-md bg-surface-container-low rounded-lg mb-space-lg flex items-start gap-space-sm">
-          <input
-            type="checkbox"
-            id="pernyataanHak"
-            required
+        <div className="flex flex-col gap-space-md">
+          <FileDropzone
+            label="Filosofi Logo (PDF)"
+            accept=".pdf"
+            maxSizeMB={5}
+            value={filosofiPdfFile}
+            onChange={(files) => setValue("filosofi_pdf_file", files as FileList | null)}
+            error={errors.filosofi_pdf_file?.message?.toString()}
             disabled={isSubmitting}
-            className="mt-1 w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer accent-secondary"
+            icon="upload"
+            description="Deskripsi makna, elemen, dan filosofi warna. Format PDF, maksimal 300 kata (Maks. 5 MB)"
           />
-          <label
-            htmlFor="pernyataanHak"
-            className="text-body-sm text-on-surface cursor-pointer select-none"
-          >
-            Saya menyatakan dengan sesungguhnya bahwa karya desain logo yang diajukan adalah murni hasil karya orisinal pribadi, belum pernah dipublikasikan, serta bebas dari segala bentuk plagiasi atau klaim hak cipta pihak manapun.
-          </label>
+
+          <FileDropzone
+            label="Surat Pernyataan Keaslian (Bermaterai Rp10.000)"
+            accept=".jpg,.jpeg,.png,.pdf"
+            maxSizeMB={5}
+            value={suratPernyataanFile}
+            onChange={(files) => setValue("surat_pernyataan_file", files as FileList | null)}
+            error={errors.surat_pernyataan_file?.message?.toString()}
+            disabled={isSubmitting}
+            icon="upload"
+            description="Scan atau foto surat pernyataan bermaterai. Format: JPG, PNG, atau PDF (Maks. 5 MB)"
+          />
+
+          <div className="p-space-md bg-surface-container-low rounded-lg flex items-start gap-space-sm">
+            <input
+              type="checkbox"
+              id="pernyataanHak"
+              required
+              disabled={isSubmitting}
+              className="mt-1 w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer accent-secondary"
+            />
+            <label
+              htmlFor="pernyataanHak"
+              className="text-body-sm text-on-surface cursor-pointer select-none"
+            >
+              Saya menyatakan bahwa karya logo yang diajukan adalah murni hasil karya orisinal, belum pernah dipublikasikan, serta bebas dari plagiasi atau klaim hak cipta pihak manapun.
+            </label>
+          </div>
         </div>
 
-        {/* Action Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-space-md">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-space-md mt-space-lg">
           <div className="flex items-center gap-space-xs text-on-surface-variant">
             <Hash className="w-4 h-4 text-secondary" />
             <span className="text-label-mono text-[11px]">
-              Kode pendaftaran (cth: MATENG-XXXXXX) otomatis terbit
+              Kode pendaftaran (MATENG-XXXXXX) otomatis terbit
             </span>
           </div>
           <button

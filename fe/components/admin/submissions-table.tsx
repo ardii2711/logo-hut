@@ -143,10 +143,7 @@ export default function SubmissionsTable({ submissions, isLoading, pagination, o
                       <span className="font-title-md text-title-md text-on-surface">{submission.name}</span>
                     </td>
                     <td className="py-space-md px-space-md">
-                      <div className="flex flex-col max-w-sm">
-                        <span className="font-body-md text-body-md text-on-surface line-clamp-1">{submission.title}</span>
-                        <span className="font-body-sm text-body-sm text-on-surface-variant truncate">{submission.description}</span>
-                      </div>
+                      <span className="font-body-md text-body-md text-on-surface line-clamp-2">{submission.title}</span>
                     </td>
                     <td className="py-space-md px-space-md">
                       <div className="flex flex-col">
@@ -208,8 +205,7 @@ export default function SubmissionsTable({ submissions, isLoading, pagination, o
                 </div>
                 <div>
                   <p className="text-base font-semibold text-on-surface">{submission.name}</p>
-                  <p className="text-sm text-on-surface mt-1">{submission.title}</p>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-0.5">{submission.description}</p>
+                  <p className="text-sm text-on-surface mt-1 line-clamp-2">{submission.title}</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">

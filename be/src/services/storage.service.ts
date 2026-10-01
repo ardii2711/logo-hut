@@ -1,60 +1,55 @@
-import { createClient } from '@supabase/supabase-js';
+import { S3Client, PutObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 
-// ponytail: create fresh client per request to avoid stale state
-function getSupabaseClient() {
-  const supabaseUrl = process.env.SUPABASE_URL!;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-  return createClient(supabaseUrl, supabaseServiceKey);
-}
+const r2Client = new S3Client({
+  region: 'auto',
+  endpoint: process.env.S3_API_ENDPOINT!,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
+  },
+});
+
+const BUCKET_NAME = process.env.R2_BUCKET_NAME!;
+const PUBLIC_URL = process.env.R2_PUBLIC_URL!;
 
 export async function uploadFile(
-  bucket: string,
   path: string,
   buffer: Buffer,
   mimetype: string
 ): Promise<string> {
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .upload(path, buffer, {
-      contentType: mimetype,
-      upsert: false,
-    });
+  const command = new PutObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: path,
+    Body: buffer,
+    ContentType: mimetype,
+  });
 
-  if (error) {
-    throw new Error(`Upload failed: ${error.message}`);
-  }
-
-  return data.path;
+  await r2Client.send(command);
+  return path;
 }
 
-export async function deleteFile(bucket: string, path: string): Promise<void> {
-  const supabase = getSupabaseClient();
-  const { error } = await supabase.storage.from(bucket).remove([path]);
+export async function deleteFile(path: string): Promise<void> {
+  const command = new DeleteObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: path,
+  });
 
-  if (error) {
-    throw new Error(`Delete failed: ${error.message}`);
-  }
+  await r2Client.send(command);
 }
 
-export async function getSignedUrl(
-  bucket: string,
-  path: string,
-  expiresIn: number = 3600
-): Promise<string> {
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .createSignedUrl(path, expiresIn);
+export async function deleteFiles(paths: string[]): Promise<void> {
+  if (paths.length === 0) return;
+  
+  const command = new DeleteObjectsCommand({
+    Bucket: BUCKET_NAME,
+    Delete: {
+      Objects: paths.map(Key => ({ Key })),
+    },
+  });
 
-  if (error) {
-    console.error(`Signed URL error for ${bucket}/${path}:`, error);
-    throw new Error(`Signed URL failed: ${error.message}`);
-  }
+  await r2Client.send(command);
+}
 
-  if (!data?.signedUrl) {
-    throw new Error(`Signed URL returned empty for ${path}`);
-  }
-
-  return data.signedUrl;
+export function getPublicUrl(path: string): string {
+  return `${PUBLIC_URL}/${path}`;
 }
