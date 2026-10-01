@@ -1,4 +1,11 @@
-import { supabase } from '../config/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+// ponytail: create fresh client per request to avoid stale state
+function getSupabaseClient() {
+  const supabaseUrl = process.env.SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  return createClient(supabaseUrl, supabaseServiceKey);
+}
 
 export async function uploadFile(
   bucket: string,
@@ -6,6 +13,7 @@ export async function uploadFile(
   buffer: Buffer,
   mimetype: string
 ): Promise<string> {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase.storage
     .from(bucket)
     .upload(path, buffer, {
@@ -21,6 +29,7 @@ export async function uploadFile(
 }
 
 export async function deleteFile(bucket: string, path: string): Promise<void> {
+  const supabase = getSupabaseClient();
   const { error } = await supabase.storage.from(bucket).remove([path]);
 
   if (error) {
@@ -33,6 +42,7 @@ export async function getSignedUrl(
   path: string,
   expiresIn: number = 3600
 ): Promise<string> {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase.storage
     .from(bucket)
     .createSignedUrl(path, expiresIn);
