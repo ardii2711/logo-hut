@@ -56,6 +56,13 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
+app.get('/', (_req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'Backend Portal Sayembara Logo Mamuju Tengah aktif' 
+  });
+});
+
 // Apply rate limiters
 app.use('/api/auth/login', loginLimiter);
 app.use('/api/submissions', submissionLimiter);
@@ -84,4 +91,39 @@ process.on('SIGINT', async () => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+
+  // Self-ping Render (cegah sleep)
+  if (process.env.RENDER_EXTERNAL_HOSTNAME) {
+    const selfPingUrl = `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`;
+    const pingInterval = 7 * 60 * 1000; // 7 menit
+    
+    console.log(`Self-ping aktif: ${selfPingUrl} setiap 7 menit`);
+    
+    setInterval(async () => {
+      try {
+        const response = await fetch(selfPingUrl);
+        if (response.ok) {
+          console.log(`[${new Date().toLocaleTimeString('id-ID')}] Self-ping sukses`);
+        } else {
+          console.warn(`[${new Date().toLocaleTimeString('id-ID')}] Self-ping gagal (${response.status})`);
+        }
+      } catch (error) {
+        console.error(`[${new Date().toLocaleTimeString('id-ID')}] Error self-ping:`, 
+          error instanceof Error ? error.message : 'Unknown');
+      }
+    }, pingInterval);
+  }
+
+  // DB keep-alive (cegah Supabase pause)
+  const dbPingInterval = 12 * 60 * 60 * 1000; // 12 jam
+  console.log('DB keep-alive aktif setiap 12 jam');
+  
+  setInterval(async () => {
+    try {
+      await prisma.$executeRaw`SELECT 1`;
+      console.log(`[${new Date().toLocaleTimeString('id-ID')}] DB keep-alive sukses`);
+    } catch (error) {
+      console.error(`[${new Date().toLocaleTimeString('id-ID')}] DB keep-alive gagal:`, error);
+    }
+  }, dbPingInterval);
 });
