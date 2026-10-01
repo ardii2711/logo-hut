@@ -48,7 +48,7 @@ export default function HeroSection() {
               ) : (
                 <>
                   <span className="font-semibold text-on-surface">
-                    {days} hari {hours} jam {minutes} menit lagi pengumpulan karya logo
+                    {days} hari {hours} jam {minutes} menit lagi.
                   </span>
                 </>
               )}

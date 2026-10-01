@@ -58,7 +58,7 @@ export default function LoginPage() {
       <Header />
       <main className="w-full pt-20 bg-surface">
         {/* Ambient Background */}
-        <div className="relative w-full flex items-center justify-center py-8 md:py-12 lg:py-16 px-margin md:px-margin-md lg:px-margin-lg overflow-hidden">
+        <div className="relative w-full flex items-center justify-center pt-8 pb-2 md:py-12 lg:py-16 px-margin md:px-margin-md lg:px-margin-lg overflow-hidden">
           <div className="absolute -top-32 -left-20 w-96 h-96 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
           <div className="absolute -bottom-32 -right-20 w-96 h-96 rounded-full bg-surface-variant/30 blur-3xl pointer-events-none"></div>
 

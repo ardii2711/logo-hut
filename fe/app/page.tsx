@@ -51,7 +51,7 @@ export default function Home() {
           <LandscapeBanner />
 
           {/* Form + Sidebar Grid */}
-          <section className="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg py-margin-md">
+          <section className="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg py-margin-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg">
               {/* Left: Form (8 cols desktop) */}
               <div className="lg:col-span-8">

@@ -89,7 +89,7 @@ function SuccessContent() {
       <Header />
 
       <main className="w-full pt-16 sm:pt-20 bg-surface">
-        <div className="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg py-8 sm:py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg pt-6 pb-2 sm:py-12 md:py-14">
           {/* Hero Section - Full Width */}
           <div className="text-center mb-8 sm:mb-10">
             {/* Animated Success Icon */}

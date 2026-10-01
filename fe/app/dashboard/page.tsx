@@ -86,7 +86,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background py-space-xl">
+    <div className="min-h-screen bg-background py-space-md md:py-space-xl">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-space-xl px-margin md:px-margin-md lg:px-margin-lg">
         {/* Hero */}
         <section className="relative overflow-hidden rounded-xl bg-surface-container-lowest px-space-lg py-space-lg shadow-sm md:px-space-xl">

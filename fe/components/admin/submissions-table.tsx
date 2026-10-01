@@ -207,8 +207,8 @@ export default function SubmissionsTable({ submissions, isLoading, pagination, o
                   <span className="font-label-mono text-label-mono text-outline">#{String(rowNumber).padStart(2, "0")}</span>
                 </div>
                 <div>
-                  <p className="font-title-md text-title-md text-on-surface">{submission.name}</p>
-                  <p className="font-body-md text-body-md text-on-surface mt-1">{submission.title}</p>
+                  <p className="text-base font-semibold text-on-surface">{submission.name}</p>
+                  <p className="text-sm text-on-surface mt-1">{submission.title}</p>
                   <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-0.5">{submission.description}</p>
                 </div>
                 <div className="flex items-center justify-between">
@@ -216,7 +216,7 @@ export default function SubmissionsTable({ submissions, isLoading, pagination, o
                     <span className="font-label-sm text-label-sm text-on-surface">{formatDate(submission.createdAt)}</span>
                     <span className="font-label-mono text-label-mono text-outline text-xs">{formatTime(submission.createdAt)}</span>
                   </div>
-                  <button className="inline-flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-secondary/10 text-secondary font-label-sm text-label-sm font-semibold">
+                  <button className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-secondary/10 text-secondary text-xs font-semibold">
                     Lihat
                     <span className="text-base leading-none">→</span>
                   </button>
