@@ -63,10 +63,24 @@ export async function getSubmissionDetail(id: string) {
   }
 
   // Generate signed URLs (expire in 1 hour = 3600s)
-  const [ktpFileUrl, logoFileUrl] = await Promise.all([
-    getSignedUrl('submissions', submission.ktpFilePath, 3600),
-    getSignedUrl('submissions', submission.logoFilePath, 3600),
-  ]);
+  // ponytail: graceful fallback if file missing
+  let ktpFileUrl = '';
+  let logoFileUrl = '';
+
+  try {
+    [ktpFileUrl, logoFileUrl] = await Promise.all([
+      getSignedUrl('submissions', submission.ktpFilePath, 3600).catch((err) => {
+        console.warn(`KTP file not found: ${submission.ktpFilePath}`, err.message);
+        return ''; // Return empty string if file missing
+      }),
+      getSignedUrl('submissions', submission.logoFilePath, 3600).catch((err) => {
+        console.warn(`Logo file not found: ${submission.logoFilePath}`, err.message);
+        return ''; // Return empty string if file missing
+      }),
+    ]);
+  } catch (error) {
+    console.error('Error generating signed URLs:', error);
+  }
 
   return {
     id: submission.id,
