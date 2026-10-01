@@ -548,8 +548,8 @@ npm run dev
 ### Frontend ✓
 
 - [x] FE-1: Setup selesai
-- [ ] FE-2: Halaman publik selesai
-- [ ] FE-3: Halaman admin selesai
+- [x] FE-2: Halaman publik selesai
+- [x] FE-3: Halaman admin selesai
 - [ ] FE-4: Deployed ke Vercel
 
 ### Testing Integrasi ✓
@@ -569,8 +569,8 @@ npm run dev
 
 ## Status Saat Ini
 
-**Hari ini:** 30 September 2026 (H+1)  
-**Fase saat ini:** FE-2 (Halaman Publik)  
+**Hari ini:** 1 Oktober 2026 (H+2)  
+**Fase saat ini:** FE-3 SELESAI  
 **Progress Backend:** ✅ SELESAI (BE-1 hingga BE-5)
 - ✅ Express + TypeScript + Prisma v7
 - ✅ Migration database + Prisma Client
@@ -581,17 +581,26 @@ npm run dev
 - ✅ Auth API (login + JWT)
 - ✅ Admin API (list, search, pagination, detail)
 - ✅ Security fixes (rate limiting, CORS, request limits, graceful shutdown)
+- ✅ Graceful error handling untuk missing files di storage
 
-**Progress Frontend:** ✅ FE-1 SELESAI
-- ✅ Next.js 14+ + TypeScript + Tailwind v4
-- ✅ shadcn/ui components (8 komponen)
+**Progress Frontend:** ✅ FE-1 + FE-2 + FE-3 SELESAI
+- ✅ Next.js 16 + TypeScript + Tailwind v4
+- ✅ shadcn/ui components (11 komponen: sonner, alert-dialog)
 - ✅ API client (axios + interceptors)
 - ✅ Auth context (useAuth hook)
 - ✅ TypeScript types lengkap
 - ✅ Hooks utilities (useAuth, useDebounce)
+- ✅ Form submission publik (3-panel form + file upload)
+- ✅ Success page (kode verifikasi + download receipt)
+- ✅ Login page dengan redirect logic
+- ✅ **Protected routes** (redirect homepage & login jika authenticated)
+- ✅ **Dashboard listing** (table desktop + card mobile, search real-time, pagination)
+- ✅ **Dashboard detail page** (redesign sesuai referensi Material Design 3)
+- ✅ Logout dengan confirmation dialog + toast
+- ✅ Mobile responsive optimization (compact layout, smaller fonts)
 - ✅ Build sukses tanpa error
 
-**Selanjutnya:** FE-2 (Form submission + success page)
+**Selanjutnya:** BE-6 (Deploy Backend ke Render) + FE-4 (Deploy Frontend ke Vercel)
 
 ---
 
