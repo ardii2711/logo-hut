@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 import { loginSchema, LoginFormData } from "@/lib/validations/login.schema";
 import { InputStitch } from "@/components/ui/input-stitch";
-import api from "@/lib/api";
-import type { LoginResponse, ErrorResponse } from "@/types";
+import { useAuth } from "@/hooks/use-auth";
+import type { ErrorResponse } from "@/types";
 import { AxiosError } from "axios";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -17,8 +17,16 @@ import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { isAuthenticated, isLoading, login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.push("/dashboard");
+    }
+  }, [isAuthenticated, isLoading, router]);
 
   const {
     register,
@@ -32,12 +40,8 @@ export default function LoginPage() {
     setServerError(null);
 
     try {
-      const response = await api.post<LoginResponse>("/auth/login", data);
-
-      // Save token
-      localStorage.setItem("token", response.data.data.accessToken);
-
-      // Redirect to dashboard
+      await login(data.email, data.password);
+      // Redirect handled by useEffect above
       router.push("/dashboard");
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data) {
