@@ -23,14 +23,24 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
     }
   };
 
-  const handleDownload = (url: string, filename: string) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.target = "_blank";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  const handleDownload = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+    } catch (error) {
+      console.error("Download failed:", error);
+      window.open(url, "_blank");
+    }
   };
 
   return (
@@ -61,30 +71,24 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
           <div className="flex gap-2 border-b border-outline-variant">
             <button
               onClick={() => setActiveTab("preview")}
-              className={`px-space-md py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
-                activeTab === "preview"
-                  ? "border-secondary text-secondary"
-                  : "border-transparent text-on-surface-variant hover:text-on-surface"
+              className={`px-space-md cursor-pointer py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
+                activeTab === "preview" ? "border-secondary text-secondary" : "border-transparent text-on-surface-variant hover:text-on-surface"
               }`}
             >
               Preview Logo
             </button>
             <button
               onClick={() => setActiveTab("files")}
-              className={`px-space-md py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
-                activeTab === "files"
-                  ? "border-secondary text-secondary"
-                  : "border-transparent text-on-surface-variant hover:text-on-surface"
+              className={`px-space-md cursor-pointer py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
+                activeTab === "files" ? "border-secondary text-secondary" : "border-transparent text-on-surface-variant hover:text-on-surface"
               }`}
             >
               File Logo
             </button>
             <button
               onClick={() => setActiveTab("docs")}
-              className={`px-space-md py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
-                activeTab === "docs"
-                  ? "border-secondary text-secondary"
-                  : "border-transparent text-on-surface-variant hover:text-on-surface"
+              className={`px-space-md cursor-pointer py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
+                activeTab === "docs" ? "border-secondary text-secondary" : "border-transparent text-on-surface-variant hover:text-on-surface"
               }`}
             >
               Dokumen
@@ -115,10 +119,10 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
             {activeTab === "files" && (
               <div className="flex flex-col gap-space-sm">
                 <h3 className="font-title-md text-title-md text-on-surface mb-space-xs">File Logo</h3>
-                
+
                 <button
                   onClick={() => handleDownload(submission.files.logoVector, `${submission.submissionCode}-vector`)}
-                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors"
+                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
                     <File className="w-5 h-5 text-secondary" />
@@ -130,9 +134,12 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                   <Download className="w-5 h-5 text-secondary" />
                 </button>
 
-                <button
-                  onClick={() => handleDownload(submission.files.logoPng, `${submission.submissionCode}-png.png`)}
-                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors"
+                <a
+                  href={submission.files.logoPng}
+                  download={`${submission.submissionCode}-png.png`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
                     <ImageIconLucide className="w-5 h-5 text-secondary" />
@@ -142,11 +149,11 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                     </div>
                   </div>
                   <Download className="w-5 h-5 text-secondary" />
-                </button>
+                </a>
 
                 <button
                   onClick={() => handleDownload(submission.files.logoJpeg, `${submission.submissionCode}-jpeg.jpg`)}
-                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors"
+                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
                     <ImageIconLucide className="w-5 h-5 text-secondary" />
@@ -163,10 +170,10 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
             {activeTab === "docs" && (
               <div className="flex flex-col gap-space-sm">
                 <h3 className="font-title-md text-title-md text-on-surface mb-space-xs">Dokumen Pendukung</h3>
-                
+
                 <button
                   onClick={() => handleDownload(submission.files.filosofiPdf, `${submission.submissionCode}-filosofi.pdf`)}
-                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors"
+                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
                     <FileText className="w-5 h-5 text-secondary" />
@@ -180,7 +187,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
 
                 <button
                   onClick={() => handleDownload(submission.files.suratPernyataan, `${submission.submissionCode}-surat.pdf`)}
-                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors"
+                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
                     <FileText className="w-5 h-5 text-secondary" />
@@ -194,7 +201,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
 
                 <button
                   onClick={() => handleDownload(submission.files.ktp, `${submission.submissionCode}-ktp.pdf`)}
-                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors"
+                  className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
                     <FileText className="w-5 h-5 text-secondary" />
