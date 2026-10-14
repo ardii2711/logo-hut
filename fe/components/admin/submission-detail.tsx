@@ -160,12 +160,12 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
               <div className="flex flex-col gap-space-md h-full">
                 <h3 className="font-title-md text-title-md text-on-surface flex items-center gap-2">
                   <ImageIconLucide className="w-5 h-5 text-secondary" />
-                  Pratinjau Logo PNG
+                  Pratinjau Logo
                 </h3>
 
                 <div className="flex-1 rounded-lg bg-surface-container-low/60 border border-outline-variant/30 flex items-center justify-center p-space-lg min-h-[320px]">
                   <Image
-                    src={submission.files.logoPng}
+                    src={submission.files.logoJpeg}
                     alt={submission.title}
                     width={600}
                     height={600}
