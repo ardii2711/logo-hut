@@ -17,6 +17,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
   const formatDateTime = (dateString: string) => {
     try {
       const date = new Date(dateString);
+
       return format(date, "dd MMMM yyyy, HH:mm", { locale: id }) + " WITA";
     } catch {
       return dateString;
@@ -26,20 +27,74 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
   const handleDownload = async (url: string, filename: string) => {
     try {
       const response = await fetch(url);
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
 
+      if (!response.ok) {
+        throw new Error(`Download gagal: HTTP ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const contentType = (response.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+
+      // Ambil nama file asli jika server menyediakannya.
+      const contentDisposition = response.headers.get("content-disposition") || "";
+
+      const dispositionMatch = contentDisposition.match(/filename\*=(?:UTF-8'')?([^;]+)|filename="?([^";]+)"?/i);
+
+      let originalFilename = "";
+
+      try {
+        originalFilename = decodeURIComponent((dispositionMatch?.[1] || dispositionMatch?.[2] || "").trim().replace(/^"|"$/g, ""));
+      } catch {
+        originalFilename = (dispositionMatch?.[1] || dispositionMatch?.[2] || "").trim();
+      }
+
+      let extension = originalFilename.match(/\.([a-zA-Z0-9]+)$/)?.[1]?.toLowerCase();
+
+      if (!extension) {
+        try {
+          const pathname = new URL(url).pathname;
+
+          extension = pathname.match(/\.([a-zA-Z0-9]+)$/)?.[1]?.toLowerCase();
+        } catch {
+          // URL tidak dapat diproses.
+        }
+      }
+
+      if (!extension) {
+        const mimeExtensions: Record<string, string> = {
+          "image/jpeg": "jpg",
+          "image/png": "png",
+          "image/webp": "webp",
+          "image/svg+xml": "svg",
+          "application/pdf": "pdf",
+          "application/postscript": "eps",
+          "application/illustrator": "ai",
+          "application/x-coreldraw": "cdr",
+        };
+
+        extension = mimeExtensions[contentType];
+      }
+
+      const baseFilename = filename.replace(/\.[^.]+$/, "");
+
+      const finalFilename = extension ? `${baseFilename}.${extension}` : baseFilename;
+
+      const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
+
       a.href = blobUrl;
-      a.download = filename;
+      a.download = finalFilename;
+
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
+      a.remove();
 
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+      window.setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 1000);
     } catch (error) {
       console.error("Download failed:", error);
-      window.open(url, "_blank");
+      window.open(url, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -52,9 +107,11 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
             {submission.submissionCode}
           </span>
         </div>
+
         <h1 className="font-headline-md text-headline-md md:font-headline-lg md:text-headline-lg text-on-surface tracking-tight leading-tight mb-space-xs">
           {submission.title}
         </h1>
+
         <p className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5">
           <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -77,6 +134,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
             >
               Preview Logo
             </button>
+
             <button
               onClick={() => setActiveTab("files")}
               className={`px-space-md cursor-pointer py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
@@ -85,6 +143,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
             >
               File Logo
             </button>
+
             <button
               onClick={() => setActiveTab("docs")}
               className={`px-space-md cursor-pointer py-space-sm font-label-lg text-label-lg border-b-2 transition-colors ${
@@ -103,6 +162,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                   <ImageIconLucide className="w-5 h-5 text-secondary" />
                   Pratinjau Logo PNG
                 </h3>
+
                 <div className="flex-1 rounded-lg bg-surface-container-low/60 border border-outline-variant/30 flex items-center justify-center p-space-lg min-h-[320px]">
                   <Image
                     src={submission.files.logoPng}
@@ -136,7 +196,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
 
                 <a
                   href={submission.files.logoPng}
-                  download={`${submission.submissionCode}-png.png`}
+                  download
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
@@ -152,7 +212,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                 </a>
 
                 <button
-                  onClick={() => handleDownload(submission.files.logoJpeg, `${submission.submissionCode}-jpeg.jpg`)}
+                  onClick={() => handleDownload(submission.files.logoJpeg, `${submission.submissionCode}-jpeg`)}
                   className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
@@ -172,7 +232,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                 <h3 className="font-title-md text-title-md text-on-surface mb-space-xs">Dokumen Pendukung</h3>
 
                 <button
-                  onClick={() => handleDownload(submission.files.filosofiPdf, `${submission.submissionCode}-filosofi.pdf`)}
+                  onClick={() => handleDownload(submission.files.filosofiPdf, `${submission.submissionCode}-filosofi`)}
                   className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
@@ -186,7 +246,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                 </button>
 
                 <button
-                  onClick={() => handleDownload(submission.files.suratPernyataan, `${submission.submissionCode}-surat.pdf`)}
+                  onClick={() => handleDownload(submission.files.suratPernyataan, `${submission.submissionCode}-surat`)}
                   className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
@@ -200,7 +260,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                 </button>
 
                 <button
-                  onClick={() => handleDownload(submission.files.ktp, `${submission.submissionCode}-ktp.pdf`)}
+                  onClick={() => handleDownload(submission.files.ktp, `${submission.submissionCode}-ktp`)}
                   className="flex items-center justify-between p-space-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
@@ -230,10 +290,12 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                 <span className="font-label-mono text-label-mono text-on-surface-variant block uppercase text-xs">Nama Lengkap</span>
                 <span className="font-title-md text-title-md text-on-surface mt-0.5 block">{submission.name}</span>
               </div>
+
               <div className="p-space-sm px-space-md rounded-lg bg-surface-container-low">
                 <span className="font-label-mono text-label-mono text-on-surface-variant block uppercase text-xs">Alamat Email</span>
                 <span className="font-body-sm text-body-sm text-on-surface mt-0.5 block truncate">{submission.email}</span>
               </div>
+
               <div className="p-space-sm px-space-md rounded-lg bg-surface-container-low">
                 <span className="font-label-mono text-label-mono text-on-surface-variant block uppercase text-xs">Nomor WhatsApp</span>
                 <span className="font-body-sm text-body-sm text-on-surface mt-0.5 block">{submission.whatsapp}</span>
