@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Download, FileText, User, Image as ImageIconLucide, File } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO, isValid } from "date-fns";
 import { id } from "date-fns/locale";
 import Image from "next/image";
 import type { SubmissionDetail } from "@/types";
@@ -13,14 +13,22 @@ interface SubmissionDetailProps {
 
 export default function SubmissionDetailComponent({ submission }: SubmissionDetailProps) {
   const [activeTab, setActiveTab] = useState<"preview" | "files" | "docs">("preview");
+  const files = submission?.files || {};
 
-  const formatDateTime = (dateString: string) => {
+  const formatDateTime = (dateString?: string) => {
+    if (!dateString) return "-";
     try {
-      const date = new Date(dateString);
+      const date = parseISO(dateString);
+
+      if (!isValid(date)) {
+        const fallbackDate = new Date(dateString);
+        if (!isValid(fallbackDate)) return dateString;
+        return format(fallbackDate, "dd MMMM yyyy, HH:mm", { locale: id }) + " WITA";
+      }
 
       return format(date, "dd MMMM yyyy, HH:mm", { locale: id }) + " WITA";
     } catch {
-      return dateString;
+      return dateString || "-";
     }
   };
 
@@ -35,7 +43,6 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
       const blob = await response.blob();
       const contentType = (response.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
 
-      // Ambil nama file asli jika server menyediakannya.
       const contentDisposition = response.headers.get("content-disposition") || "";
 
       const dispositionMatch = contentDisposition.match(/filename\*=(?:UTF-8'')?([^;]+)|filename="?([^";]+)"?/i);
@@ -164,14 +171,19 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                 </h3>
 
                 <div className="flex-1 rounded-lg bg-surface-container-low/60 border border-outline-variant/30 flex items-center justify-center p-space-lg min-h-[320px]">
-                  <Image
-                    src={submission.files.logoJpeg}
-                    alt={submission.title}
-                    width={600}
-                    height={600}
-                    className="max-w-full max-h-full object-contain"
-                    unoptimized
-                  />
+                  {files.logoPng ? (
+                    <Image
+                      src={files.logoPng}
+                      alt={submission.title || "Logo Preview"}
+                      width={600}
+                      height={600}
+                      className="max-w-full max-h-full object-contain"
+                      unoptimized
+                      loading="lazy"
+                    />
+                  ) : (
+                    <p className="text-body-sm text-on-surface-variant">Pratinjau logo tidak tersedia</p>
+                  )}
                 </div>
               </div>
             )}
