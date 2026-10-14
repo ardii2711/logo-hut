@@ -178,7 +178,7 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
                       width={600}
                       height={600}
                       className="max-w-full max-h-full object-contain"
-                      unoptimized
+                      priority
                       loading="lazy"
                     />
                   ) : (
