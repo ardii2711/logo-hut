@@ -172,13 +172,12 @@ export default function SubmissionDetailComponent({ submission }: SubmissionDeta
 
                 <div className="flex-1 rounded-lg bg-surface-container-low/60 border border-outline-variant/30 flex items-center justify-center p-space-lg min-h-[320px]">
                   {files.logoPng ? (
-                    <Image
+                    <img
                       src={files.logoPng}
                       alt={submission.title || "Logo Preview"}
                       width={600}
                       height={600}
                       className="max-w-full max-h-full object-contain"
-                      priority
                       loading="lazy"
                     />
                   ) : (
