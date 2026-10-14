@@ -110,14 +110,6 @@ export default function SidebarSection() {
               Setiap peserta terdaftar dengan NIK KTP hanya berhak mengumpulkan 1 karya terbaik.
             </p>
           </div>
-          <div>
-            <span className="text-label-lg text-on-surface font-medium block">
-              Kapan file vektor master diminta?
-            </span>
-            <p className="text-body-sm text-on-surface-variant mt-0.5">
-              File master (AI / CDR / EPS) hanya diminta panitia kepada pemenang.
-            </p>
-          </div>
         </div>
 
         {/* Helpdesk */}

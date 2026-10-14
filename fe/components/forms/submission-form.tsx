@@ -178,7 +178,7 @@ export default function SubmissionFormStitch() {
           </div>
 
           <FileDropzone
-            label="File Vektor Logo (AI/CDR/EPS/PDF)"
+            label="File Vektor Logo (AI/CDR/EPS)"
             accept=".ai,.cdr,.eps,.pdf"
             maxSizeMB={45}
             value={logoVectorFile}
@@ -186,7 +186,7 @@ export default function SubmissionFormStitch() {
             error={errors.logo_vector_file?.message?.toString()}
             disabled={isSubmitting}
             icon="upload"
-            description="File editable asli. Format: AI, CDR, EPS, atau PDF vektor (Maks. 45 MB)"
+            description="File editable asli. Format: AI, CDR, EPS (Maks. 45 MB)"
           />
 
           <FileDropzone
