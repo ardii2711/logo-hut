@@ -14,6 +14,8 @@ import type { SubmissionCreateResponse, ErrorResponse } from "@/types";
 import { AxiosError } from "axios";
 
 export default function SubmissionFormStitch() {
+  const isFormClosed = true;
+
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -77,6 +79,13 @@ export default function SubmissionFormStitch() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-space-lg">
+      {isFormClosed && (
+        <div className="p-space-md bg-error-container border border-error rounded-lg">
+          <p className="text-body-sm text-error font-semibold">
+            Pendaftaran telah ditutup pada 15 Oktober 2026 pukul 23:59 WITA. Terima kasih atas partisipasi Anda.
+          </p>
+        </div>
+      )}
       {serverError && (
         <div className="p-space-md bg-error-container border border-error rounded-lg">
           <p className="text-body-sm text-error font-semibold">{serverError}</p>
@@ -99,7 +108,7 @@ export default function SubmissionFormStitch() {
               id="name"
               placeholder="Contoh: Ahmad Fauzi Pratama"
               {...register("name")}
-              disabled={isSubmitting}
+              disabled={isFormClosed || isSubmitting}
             />
             {errors.name && (
               <p className="text-body-sm text-error">{errors.name.message}</p>
@@ -115,7 +124,7 @@ export default function SubmissionFormStitch() {
               type="tel"
               placeholder="081234567890"
               {...register("whatsapp")}
-              disabled={isSubmitting}
+              disabled={isFormClosed || isSubmitting}
             />
             {errors.whatsapp && (
               <p className="text-body-sm text-error">{errors.whatsapp.message}</p>
@@ -131,7 +140,7 @@ export default function SubmissionFormStitch() {
               type="email"
               placeholder="peserta@gmail.com"
               {...register("email")}
-              disabled={isSubmitting}
+              disabled={isFormClosed || isSubmitting}
             />
             {errors.email && (
               <p className="text-body-sm text-error">{errors.email.message}</p>
@@ -146,7 +155,7 @@ export default function SubmissionFormStitch() {
               value={ktpFile}
               onChange={(files) => setValue("ktp_file", files as FileList | null)}
               error={errors.ktp_file?.message?.toString()}
-              disabled={isSubmitting}
+              disabled={isFormClosed || isSubmitting}
               icon="id-card"
               description="Format: JPG, PNG, atau PDF (Maksimal 5 MB)"
             />
@@ -170,7 +179,7 @@ export default function SubmissionFormStitch() {
               id="title"
               placeholder="Contoh: Harmoni Agropolitan Mamuju Tengah"
               {...register("title")}
-              disabled={isSubmitting}
+              disabled={isFormClosed || isSubmitting}
             />
             {errors.title && (
               <p className="text-body-sm text-error">{errors.title.message}</p>
@@ -184,7 +193,7 @@ export default function SubmissionFormStitch() {
             value={logoVectorFile}
             onChange={(files) => setValue("logo_vector_file", files as FileList | null)}
             error={errors.logo_vector_file?.message?.toString()}
-            disabled={isSubmitting}
+            disabled={isFormClosed || isSubmitting}
             icon="upload"
             description="File editable asli. Format: AI, CDR, EPS (Maks. 45 MB)"
           />
@@ -196,7 +205,7 @@ export default function SubmissionFormStitch() {
             value={logoPngFile}
             onChange={(files) => setValue("logo_png_file", files as FileList | null)}
             error={errors.logo_png_file?.message?.toString()}
-            disabled={isSubmitting}
+            disabled={isFormClosed || isSubmitting}
             icon="upload"
             description="Format: PNG dengan background transparan (Maks. 10 MB)"
           />
@@ -208,7 +217,7 @@ export default function SubmissionFormStitch() {
             value={logoJpegFile}
             onChange={(files) => setValue("logo_jpeg_file", files as FileList | null)}
             error={errors.logo_jpeg_file?.message?.toString()}
-            disabled={isSubmitting}
+            disabled={isFormClosed || isSubmitting}
             icon="upload"
             description="Format: JPEG resolusi tinggi (Maks. 10 MB)"
           />
@@ -230,7 +239,7 @@ export default function SubmissionFormStitch() {
             value={filosofiPdfFile}
             onChange={(files) => setValue("filosofi_pdf_file", files as FileList | null)}
             error={errors.filosofi_pdf_file?.message?.toString()}
-            disabled={isSubmitting}
+            disabled={isFormClosed || isSubmitting}
             icon="upload"
             description="Deskripsi makna, elemen, dan filosofi warna. Format PDF, maksimal 300 kata (Maks. 5 MB)"
           />
@@ -242,7 +251,7 @@ export default function SubmissionFormStitch() {
             value={suratPernyataanFile}
             onChange={(files) => setValue("surat_pernyataan_file", files as FileList | null)}
             error={errors.surat_pernyataan_file?.message?.toString()}
-            disabled={isSubmitting}
+            disabled={isFormClosed || isSubmitting}
             icon="upload"
             description="Scan atau foto surat pernyataan bermaterai. Format: JPG, PNG, atau PDF (Maks. 5 MB)"
           />
@@ -252,7 +261,7 @@ export default function SubmissionFormStitch() {
               type="checkbox"
               id="pernyataanHak"
               required
-              disabled={isSubmitting}
+              disabled={isFormClosed || isSubmitting}
               className="mt-1 w-4 h-4 rounded text-secondary focus:ring-0 cursor-pointer accent-secondary"
             />
             <label
@@ -273,7 +282,7 @@ export default function SubmissionFormStitch() {
           </div>
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isFormClosed || isSubmitting}
             className="w-full cursor-pointer sm:w-auto inline-flex items-center justify-center gap-space-sm bg-secondary text-on-secondary hover:bg-on-secondary-container font-label-lg px-space-xl py-3.5 rounded-lg shadow-md transition-all active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
